@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnIt Design System</title>
+<link rel="icon" href="assets/earnit-favicon.svg">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background: var(--paper-soft); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 64px 32px 96px; }
+  .head { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .head img { height: 40px; }
+  .sub { color: var(--text-muted); font-size: var(--text-lead); font-weight: var(--w-medium); max-width: 640px; margin: 0 0 48px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .tpl { display: flex; flex-direction: column; text-decoration: none; color: inherit;
+    background: var(--paper); border: var(--bw-base) solid var(--ink-100);
+    border-radius: var(--radius-lg); overflow: hidden; transition: box-shadow .15s, transform .15s; }
+  .tpl:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .thumb { aspect-ratio: 210/297; overflow: hidden; background: var(--surface-soft); border-bottom: 1px solid var(--ink-100); position: relative; }
+  .thumb iframe { position: absolute; top: 0; left: 0; width: 794px; height: 1123px;
+    transform: scale(0.416); transform-origin: top left; border: 0; pointer-events: none; }
+  .cap { padding: 16px 18px; }
+  .cap h3 { margin: 0 0 4px; font: var(--w-extra) var(--text-h3) var(--font-sans); color: var(--text-strong); }
+  .cap p { margin: 0; font: var(--w-medium) var(--text-small) var(--font-sans); color: var(--text-muted); }
+  .section-label { font: var(--w-bold) var(--text-small) var(--font-sans); text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin: 0 0 20px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <img src="assets/earnit-logo.svg" alt="EarnIt">
+    </div>
+    <p class="sub">Дизайн-система для PDF-документів формату A4 з таблицями. Натисніть на шаблон, щоб відкрити та роздрукувати.</p>
+
+    <p class="section-label">Шаблони документів</p>
+    <div class="grid">
+      <a class="tpl" href="templates/cover.html">
+        <div class="thumb"><iframe src="templates/cover.html" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="cap"><h3>Обкладинка</h3><p>Титульна сторінка гайду</p></div>
+      </a>
+      <a class="tpl" href="templates/tracker.html">
+        <div class="thumb"><iframe src="templates/tracker.html" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="cap"><h3>Трекер тижня</h3><p>Завдання × дні з відмітками</p></div>
+      </a>
+      <a class="tpl" href="templates/allowance.html">
+        <div class="thumb"><iframe src="templates/allowance.html" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="cap"><h3>Кишенькові гроші</h3><p>Облік надходжень і витрат</p></div>
+      </a>
+      <a class="tpl" href="templates/checklist.html">
+        <div class="thumb"><iframe src="templates/checklist.html" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="cap"><h3>Робочий лист</h3><p>Чек-лист + план покупки</p></div>
+      </a>
+      <a class="tpl" href="templates/parent-guide.html">
+        <div class="thumb"><iframe src="templates/parent-guide.html" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="cap"><h3>Сторінка гайду</h3><p>Текст + таблиця для батьків</p></div>
+      </a>
+      <a class="tpl" href="templates/play-money.html">
+        <div class="thumb"><iframe src="templates/play-money.html" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="cap"><h3>Гроші для вирізання</h3><p>Іграшкові банкноти EarnIt</p></div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
