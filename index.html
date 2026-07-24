@@ -3,63 +3,756 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EarnIt Design System</title>
+<title>EarnIt — система, яка будує характер</title>
+<meta name="description" content="EarnIt — проста система сімейної економіки для дітей 7–10 років. Дитина сама береться за справи. Налаштуєте за один вечір.">
 <link rel="icon" href="assets/earnit-favicon.svg">
-<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  body { background: var(--paper-soft); }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 64px 32px 96px; }
-  .head { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
-  .head img { height: 40px; }
-  .sub { color: var(--text-muted); font-size: var(--text-lead); font-weight: var(--w-medium); max-width: 640px; margin: 0 0 48px; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .tpl { display: flex; flex-direction: column; text-decoration: none; color: inherit;
-    background: var(--paper); border: var(--bw-base) solid var(--ink-100);
-    border-radius: var(--radius-lg); overflow: hidden; transition: box-shadow .15s, transform .15s; }
-  .tpl:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-  .thumb { aspect-ratio: 210/297; overflow: hidden; background: var(--surface-soft); border-bottom: 1px solid var(--ink-100); position: relative; }
-  .thumb iframe { position: absolute; top: 0; left: 0; width: 794px; height: 1123px;
-    transform: scale(0.416); transform-origin: top left; border: 0; pointer-events: none; }
-  .cap { padding: 16px 18px; }
-  .cap h3 { margin: 0 0 4px; font: var(--w-extra) var(--text-h3) var(--font-sans); color: var(--text-strong); }
-  .cap p { margin: 0; font: var(--w-medium) var(--text-small) var(--font-sans); color: var(--text-muted); }
-  .section-label { font: var(--w-bold) var(--text-small) var(--font-sans); text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin: 0 0 20px; }
+  :root {
+    --indigo: #4F3FD4;
+    --indigo-dark: #1A0E6B;
+    --indigo-400: #6757E0;
+    --gold: #F5A623;
+    --gold-light: #F9C55A;
+    --gold-dark: #E2901A;
+    --bg-light: #F5F0FF;
+    --white: #FFFFFF;
+    --text: #221C3A;
+    --text-2: #5F5E5A;
+    --line: #E7E4FA;
+    --shadow-sm: 0 2px 10px rgba(26,14,107,.06);
+    --shadow-md: 0 14px 40px rgba(26,14,107,.10);
+    --shadow-lg: 0 30px 80px rgba(26,14,107,.16);
+    --shadow-gold: 0 12px 30px rgba(245,166,35,.38);
+    --r-sm: 12px; --r-md: 18px; --r-lg: 28px; --r-xl: 36px;
+    --maxw: 1120px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    color: var(--text); background: var(--white); line-height: 1.6;
+    font-size: 17px; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--indigo); text-decoration: none; }
+  a:hover { color: var(--indigo-dark); }
+  img { max-width: 100%; display: block; }
+  .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(22px, 5vw, 64px); }
+  section { position: relative; }
+
+  /* ---------- buttons ---------- */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    font-weight: 800; font-size: 17px; line-height: 1; cursor: pointer; border: none;
+    padding: 17px 30px; border-radius: 999px; transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s; }
+  .btn svg { width: 20px; height: 20px; }
+  .btn-gold { background: var(--gold); color: var(--indigo-dark); box-shadow: var(--shadow-gold); }
+  .btn-gold:hover { background: var(--gold-light); color: var(--indigo-dark); transform: translateY(-2px); box-shadow: 0 18px 40px rgba(245,166,35,.5); }
+  .btn-gold:active { transform: translateY(0); }
+  .btn-lg { padding: 21px 42px; font-size: 19px; }
+  .btn-ghost { background: rgba(255,255,255,.14); color: #fff; }
+  .btn-ghost:hover { background: rgba(255,255,255,.24); color: #fff; }
+
+  /* ---------- header ---------- */
+  header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.82);
+    backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid transparent; transition: box-shadow .2s, border-color .2s; }
+  header.scrolled { box-shadow: var(--shadow-sm); border-color: var(--line); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 11px; }
+  .brand .mark { width: 40px; height: 40px; flex: none; }
+  .brand .word { font-weight: 800; font-size: 23px; letter-spacing: -.02em; }
+  .brand .word .e { color: var(--indigo-dark); } .brand .word .i { color: var(--indigo); }
+  .nav-cta { padding: 12px 24px; font-size: 15px; }
+
+  /* ---------- hero ---------- */
+  .hero { background:
+      radial-gradient(120% 130% at 85% -10%, #6757E0 0%, transparent 55%),
+      radial-gradient(90% 120% at 0% 100%, #3B2CB0 0%, transparent 60%),
+      linear-gradient(160deg, #5A48DE 0%, var(--indigo) 42%, #3B2CB0 100%);
+    color: #fff; overflow: hidden; }
+  .hero-inner { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center;
+    padding-block: 74px 88px; }
+  .hero .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--gold-light);
+    background: rgba(255,255,255,.09); padding: 8px 16px; border-radius: 999px; margin-bottom: 22px; }
+  .hero h1 { font-size: clamp(33px, 5.4vw, 56px); line-height: 1.06; font-weight: 800; letter-spacing: -.025em; text-wrap: balance; }
+  .hero h1 .hl { color: var(--gold-light); }
+  .hero p.lead { margin-top: 22px; font-size: clamp(17px, 2.2vw, 20px); line-height: 1.55; color: rgba(255,255,255,.9); max-width: 30em; font-weight: 500; }
+  .hero-cta { margin-top: 34px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .hero-price-note { font-size: 15px; color: rgba(255,255,255,.78); font-weight: 600; }
+  .hero-price-note s { color: rgba(255,255,255,.5); font-weight: 500; }
+  .trust { margin-top: 30px; display: flex; gap: 22px; flex-wrap: wrap; }
+  .trust span { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 600; color: rgba(255,255,255,.85); }
+  .trust svg { width: 18px; height: 18px; color: var(--gold-light); flex: none; }
+
+  /* hero coin visual */
+  .hero-visual { position: relative; display: grid; place-items: center; min-height: 340px; }
+  .coin-big { position: relative; width: min(340px, 78%); aspect-ratio: 1; z-index: 2; filter: drop-shadow(0 30px 60px rgba(26,14,107,.4)); animation: float 6s var(--ease) infinite; }
+  @keyframes float { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-16px) rotate(3deg); } }
+  .hero-visual .ring { position: absolute; border: 2px dashed rgba(249,197,90,.35); border-radius: 50%; }
+  .hero-visual .ring.a { width: 108%; height: 108%; animation: spin 26s linear infinite; }
+  .hero-visual .ring.b { width: 130%; height: 130%; border-color: rgba(255,255,255,.14); animation: spin 40s linear infinite reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .float-chip { position: absolute; z-index: 3; background: #fff; color: var(--indigo-dark); border-radius: 14px;
+    padding: 11px 15px; font-weight: 700; font-size: 14px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 9px; }
+  .float-chip .dot { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; flex: none; }
+  .float-chip.c1 { top: 8%; left: -4%; animation: float 5s var(--ease) infinite; }
+  .float-chip.c2 { bottom: 12%; right: -6%; animation: float 5.6s var(--ease) .6s infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .coin-big, .float-chip, .hero-visual .ring { animation: none !important; }
+  }
+
+  .hero-wave { display: block; width: 100%; height: auto; margin-bottom: -6px; }
+
+  /* ---------- generic section ---------- */
+  .sec { padding: 84px 0; }
+  .sec.tint { background: var(--bg-light); }
+  .kicker { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--indigo); margin-bottom: 14px; }
+  .sec h2 { font-size: clamp(27px, 4vw, 40px); line-height: 1.12; font-weight: 800; letter-spacing: -.02em; color: var(--indigo-dark); text-wrap: balance; }
+  .sec .sub { margin-top: 16px; font-size: 18px; color: var(--text-2); max-width: 34em; line-height: 1.6; }
+  .center { text-align: center; }
+  .center .sub { margin-left: auto; margin-right: auto; }
+
+  /* ---------- problem ---------- */
+  .problem .p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 46px; align-items: center; margin-top: 8px; }
+  .problem blockquote { font-size: clamp(21px, 2.8vw, 27px); line-height: 1.42; font-weight: 700; color: var(--indigo-dark); letter-spacing: -.01em; text-wrap: pretty; }
+  .problem blockquote .mark { color: var(--indigo); }
+  .problem p { margin-top: 20px; color: var(--text-2); font-size: 17px; }
+  .pain-list { display: grid; gap: 14px; }
+  .pain-item { display: flex; gap: 14px; align-items: flex-start; background: #fff; border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 18px 20px; box-shadow: var(--shadow-sm); }
+  .pain-item .x { width: 30px; height: 30px; border-radius: 9px; flex: none; display: grid; place-items: center;
+    background: #FBE4E3; color: #D6453F; }
+  .pain-item .x svg { width: 18px; height: 18px; }
+  .pain-item p { margin: 0; font-weight: 600; color: var(--text); font-size: 16px; line-height: 1.45; }
+
+  /* ---------- author ---------- */
+  .author-card { display: grid; grid-template-columns: .82fr 1.18fr; gap: 44px; align-items: center;
+    background: var(--bg-light); border: 1px solid var(--line); border-radius: var(--r-xl); padding: 40px; box-shadow: var(--shadow-sm); }
+  .author-photo { border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 3/4; background: #fff; }
+  .author-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+  .author-copy .kicker { color: var(--gold-dark); }
+  .author-copy h2 { margin-top: 10px; font-size: clamp(24px, 3vw, 34px); font-weight: 800; color: var(--indigo-dark); letter-spacing: -.02em; line-height: 1.12; text-wrap: balance; }
+  .author-copy p { margin-top: 16px; font-size: 17px; line-height: 1.6; color: var(--text-2); }
+  .author-sign { display: inline-block; margin-top: 20px; font-weight: 800; color: var(--indigo); }
+  @media (max-width: 760px) {
+    .author-card { grid-template-columns: 1fr; gap: 26px; padding: 26px; }
+    .author-photo { max-width: 360px; margin: 0 auto; width: 100%; }
+  }
+
+  /* ---------- steps ---------- */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 52px; }
+  .step { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); padding: 38px 28px 32px;
+    position: relative; box-shadow: var(--shadow-sm); text-align: center; transition: transform .22s var(--ease), box-shadow .22s var(--ease); }
+  .step:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+  .step .s-ico { width: 76px; height: 76px; border-radius: 50%; background: var(--bg-light); color: var(--indigo);
+    display: grid; place-items: center; margin: 0 auto 16px; }
+  .step .s-ico svg { width: 38px; height: 38px; }
+  .step .num { display: block; font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 14px; }
+  .step h3 { font-size: 21px; font-weight: 800; color: var(--indigo-dark); letter-spacing: -.01em; }
+  .step p { margin-top: 10px; color: var(--text-2); font-size: 16px; }
+  .step-arrow-note { margin-top: 40px; text-align: center; font-size: 16px; color: var(--text-2); font-weight: 600; }
+  .step-arrow-note b { color: var(--indigo-dark); }
+
+  /* ---------- inside ---------- */
+  .inside-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 52px; }
+  .inside-card { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .inside-shot { aspect-ratio: 4/3; background: var(--bg-light); position: relative; overflow: hidden; display: grid; place-items: center; padding: 22px; }
+  .inside-shot img { width: 100%; height: 100%; object-fit: contain; object-position: top center; border-radius: 8px; box-shadow: 0 8px 24px rgba(26,14,107,.12);
+    -webkit-mask-image: linear-gradient(to bottom, #000 42%, transparent 88%); mask-image: linear-gradient(to bottom, #000 42%, transparent 88%); }
+  .inside-ph { color: rgba(255,255,255,.9); text-align: center; padding: 24px; }
+  .inside-ph svg { width: 46px; height: 46px; margin-bottom: 10px; }
+  .inside-ph span { font-weight: 700; font-size: 15px; }
+  .inside-body { padding: 26px 26px 30px; }
+  .inside-body .tag { font-size: 12.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-dark); }
+  .inside-body h3 { margin-top: 8px; font-size: 22px; font-weight: 800; color: var(--indigo-dark); }
+  .inside-body p { margin-top: 10px; color: var(--text-2); font-size: 16px; }
+  .inside-body ul { margin-top: 16px; display: grid; gap: 9px; list-style: none; }
+  .inside-body li { display: flex; gap: 10px; align-items: flex-start; font-size: 15.5px; font-weight: 600; color: var(--text); }
+  .inside-body li svg { width: 19px; height: 19px; color: var(--indigo); flex: none; margin-top: 2px; }
+
+  /* ---------- for whom ---------- */
+  .whom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+  .whom-col { border-radius: var(--r-lg); padding: 32px 30px; }
+  .whom-col.yes { background: #fff; border: 2px solid var(--indigo); box-shadow: var(--shadow-md); }
+  .whom-col.no { background: var(--bg-light); border: 1px solid var(--line); }
+  .whom-col h3 { display: flex; align-items: center; gap: 11px; font-size: 20px; font-weight: 800; color: var(--indigo-dark); margin-bottom: 20px; }
+  .whom-col h3 .b { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+  .whom-col.yes .b { background: #E2F3EA; color: #2F9E64; }
+  .whom-col.no .b { background: #F1EFFA; color: var(--text-2); }
+  .whom-col ul { list-style: none; display: grid; gap: 14px; }
+  .whom-col li { display: flex; gap: 12px; align-items: flex-start; font-size: 16px; color: var(--text); font-weight: 500; }
+  .whom-col li svg { width: 21px; height: 21px; flex: none; margin-top: 2px; }
+  .whom-col.yes li svg { color: #2F9E64; } .whom-col.no li svg { color: var(--text-2); }
+
+  /* ---------- why coins ---------- */
+  .why { background: var(--indigo-dark); color: #fff; border-radius: var(--r-xl); padding: 56px 52px; position: relative; overflow: hidden; }tion: relative; overflow: hidden; }
+  .why::after { content: ""; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,166,35,.28), transparent 68%); }
+  .why-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: center; position: relative; z-index: 1; }
+  .why .kicker { color: var(--gold-light); }
+  .why h2 { color: #fff; }
+  .why p { margin-top: 18px; color: rgba(255,255,255,.86); font-size: 17.5px; }
+  .why-coin { display: grid; place-items: center; position: relative; }
+  .why-coin svg.mainc { width: min(210px, 60%); filter: drop-shadow(0 20px 40px rgba(0,0,0,.35)); position: relative; z-index: 1; }
+  .coin-rain { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; border-radius: var(--r-xl); }
+  .coin-rain .fc { position: absolute; top: -60px; width: 34px; height: 34px; opacity: .5; animation: coinfall linear infinite; }
+  .coin-rain .fc svg { width: 100%; height: 100%; transform-origin: center; animation: coinspin linear infinite; }
+  .coin-rain .fc.rev svg { animation-direction: reverse; }
+  @keyframes coinfall { 0% { transform: translateY(-60px); opacity: 0; } 10% { opacity: .55; } 90% { opacity: .55; } 100% { transform: translateY(var(--fall, 520px)); opacity: 0; } }
+  @keyframes coinspin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .coin-rain { display: none; } }
+
+  /* ---------- price ---------- */
+  .price { display: grid; place-items: center; }
+  .price-card { background: #fff; border-radius: var(--r-xl); box-shadow: var(--shadow-lg); border: 1px solid var(--line);
+    max-width: 820px; width: 100%; margin: 0 auto; overflow: hidden; position: relative;
+    display: grid; grid-template-columns: 1.15fr .85fr; text-align: left; }
+  .price-inc { padding: 40px 40px; }
+  .price-inc .ribbon { display: inline-block; background: var(--bg-light); color: var(--indigo); font-weight: 800;
+    font-size: 13px; letter-spacing: .1em; text-transform: uppercase; padding: 8px 18px; border-radius: 999px; margin-bottom: 22px; }
+  .price-inc h3 { font-size: 22px; font-weight: 800; color: var(--indigo-dark); margin-bottom: 20px; letter-spacing: -.01em; }
+  .price-buy { padding: 40px 40px; background: linear-gradient(160deg, #f7f3ff, var(--bg-light)); border-left: 1px solid var(--line);
+    display: flex; flex-direction: column; justify-content: center; text-align: center; }
+  .price-amt { display: flex; align-items: baseline; justify-content: center; gap: 6px; }
+  .price-amt .num { font-size: 68px; font-weight: 800; color: var(--indigo-dark); letter-spacing: -.03em; line-height: 1; }
+  .price-amt .cur { font-size: 20px; font-weight: 700; color: var(--text-2); }
+  .price-old { margin-top: 8px; font-size: 16px; color: var(--text-2); font-weight: 600; }
+  .price-old s { color: var(--text-2); } .price-old .save { color: #2F9E64; font-weight: 800; margin-left: 6px; }
+  .price-list { list-style: none; text-align: left; display: grid; gap: 13px; margin: 0; }
+  .price-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 16px; font-weight: 600; }
+  .price-list li svg { width: 21px; height: 21px; color: #2F9E64; flex: none; margin-top: 1px; }
+  .price-buy .btn { width: 100%; margin-top: 24px; }
+  .price-fine { margin-top: 16px; font-size: 14px; color: var(--text-2); }
+  .price-fine svg { width: 15px; height: 15px; vertical-align: -2px; color: var(--indigo); }
+
+  /* ---------- reviews ---------- */
+  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 50px; }
+  .review { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px 26px; box-shadow: var(--shadow-sm); }
+  .review .stars { display: flex; gap: 3px; color: var(--gold); margin-bottom: 14px; }
+  .review .stars svg { width: 19px; height: 19px; }
+  .review p { font-size: 16.5px; color: var(--text); line-height: 1.55; font-weight: 500; }
+  .review .who { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+  .review .av { width: 46px; height: 46px; border-radius: 50%; background: var(--bg-light); color: var(--indigo);
+    display: grid; place-items: center; font-weight: 800; font-size: 19px; flex: none; overflow: hidden; user-select: none; }
+  .review:nth-child(1) .av { background: #EDE9FE; color: var(--indigo); }
+  .review:nth-child(2) .av { background: #FDE5C8; color: var(--gold-dark); }
+  .review:nth-child(3) .av { background: #E4F3EC; color: #1F8A5B; }
+  .review .who b { display: block; font-size: 15px; color: var(--indigo-dark); font-weight: 800; }
+  .review .who span { font-size: 13.5px; color: var(--text-2); }
+  .review.ph { border-style: dashed; background: var(--bg-light); box-shadow: none; }
+  .review.ph p { color: var(--text-2); font-style: italic; }
+
+  /* ---------- faq ---------- */
+  .faq-list { max-width: 780px; margin: 44px auto 0; display: grid; gap: 12px; }
+  .faq-item { background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+  .faq-item[open] { border-color: var(--indigo); box-shadow: var(--shadow-sm); }  .faq-item summary { list-style: none; cursor: pointer; padding: 22px 24px; display: flex; align-items: center;
+    justify-content: space-between; gap: 16px; font-weight: 700; font-size: 17.5px; color: var(--indigo-dark); }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary .chev { width: 26px; height: 26px; flex: none; color: var(--indigo); transition: transform .3s var(--ease); }
+  .faq-item:has(.faq-anim.opening) summary .chev { transform: rotate(180deg); }
+  .faq-item .ans { padding: 0 24px 24px; color: var(--text-2); font-size: 16.5px; line-height: 1.6; }
+  /* smooth accordion */
+  .faq-anim { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .34s var(--ease); }
+  .faq-anim > .faq-inner { overflow: hidden; }
+  .faq-anim.opening { grid-template-rows: 1fr; }
+  .faq-item .ans { opacity: 0; transform: translateY(-4px); transition: opacity .3s var(--ease) .04s, transform .3s var(--ease) .04s; }
+  .faq-anim.opening .ans { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .faq-anim { transition: none; } .faq-item .ans { transition: none; } }
+
+  /* ---------- final cta ---------- */
+  .final { background: linear-gradient(160deg, #5A48DE, var(--indigo) 55%, #3B2CB0); color: #fff; text-align: center; overflow: hidden; }
+  .final .wrap { padding: 88px 22px 92px; position: relative; }
+  .final .mark { width: 64px; height: 64px; margin: 0 auto 24px; }
+  .final h2 { color: #fff; font-size: clamp(28px, 4.4vw, 44px); }
+  .final p { margin: 18px auto 0; color: rgba(255,255,255,.88); font-size: 19px; max-width: 30em; }
+  .final .btn { margin-top: 34px; }
+  .final .slogan { margin-top: 26px; font-size: 15px; letter-spacing: .04em; color: rgba(255,255,255,.7); font-weight: 600; }
+
+  /* ---------- footer ---------- */
+  footer { background: var(--indigo-dark); color: rgba(255,255,255,.7); padding: 52px 0 40px; font-size: 15px; }
+  .foot-grid { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; align-items: flex-start; }
+  .foot-brand .word { font-weight: 800; font-size: 22px; }
+  .foot-brand .word .e { color: #fff; } .foot-brand .word .i { color: var(--gold-light); }
+  .foot-brand p { margin-top: 10px; max-width: 26em; color: rgba(255,255,255,.6); }
+  .foot-links { display: flex; gap: 46px; flex-wrap: wrap; }
+  .foot-col h4 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 14px; }
+  .foot-col a, .foot-col span { display: block; color: rgba(255,255,255,.8); margin-bottom: 10px; }
+  .foot-col a:hover { color: var(--gold-light); }
+  .foot-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.12); display: flex;
+    justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13.5px; color: rgba(255,255,255,.5); }
+
+  /* ---------- reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1 !important; transform: none !important; transition: none; } }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 30px; padding-block: 54px 70px; text-align: center; }
+    .hero .eyebrow { margin-left: auto; margin-right: auto; }
+    .hero p.lead { margin-left: auto; margin-right: auto; }
+    .hero-cta, .trust { justify-content: center; }
+    .hero-visual { min-height: 300px; order: -1; overflow: hidden; }
+    .coin-big { width: min(280px, 66%); }
+    .hero-visual .ring.a { width: 96%; height: 96%; }
+    .hero-visual .ring.b { width: 112%; height: 112%; }
+    .float-chip.c1 { left: 2%; }
+    .float-chip.c2 { right: 2%; }
+    .problem .p-grid, .why-inner { grid-template-columns: 1fr; gap: 30px; }
+    .why { padding: 44px 32px; }
+    .why-coin { order: -1; }
+    .steps, .inside-grid, .whom-grid, .reviews-grid { grid-template-columns: 1fr; }
+    .reviews-grid { max-width: 520px; margin-left: auto; margin-right: auto; }
+    .price-card { grid-template-columns: 1fr; max-width: 480px; }
+    .price-buy { border-left: none; border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    .sec { padding: 60px 0; }
+    .nav-cta { padding: 11px 18px; }
+    .brand .word { font-size: 20px; }
+    .why::after { display: none; }
+    .price-inc, .price-buy { padding: 30px 24px; }
+    .price-amt .num { font-size: 56px; }
+    .final .wrap { padding: 64px 22px; }
+    .foot-links { gap: 32px; }
+    .hero-visual { min-height: 300px; overflow: hidden; }
+    .coin-big { width: min(240px, 62%); }
+    .hero-visual .ring.a { width: 92%; height: 92%; }
+    .hero-visual .ring.b { width: 108%; height: 108%; }
+    .float-chip { font-size: 13px; padding: 9px 13px; }
+    .float-chip.c1 { left: 4%; }
+    .float-chip.c2 { right: 4%; }
+  }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="head">
-      <img src="assets/earnit-logo.svg" alt="EarnIt">
-    </div>
-    <p class="sub">Дизайн-система для PDF-документів формату A4 з таблицями. Натисніть на шаблон, щоб відкрити та роздрукувати.</p>
 
-    <p class="section-label">Шаблони документів</p>
-    <div class="grid">
-      <a class="tpl" href="templates/cover.html">
-        <div class="thumb"><iframe src="templates/cover.html" scrolling="no" tabindex="-1"></iframe></div>
-        <div class="cap"><h3>Обкладинка</h3><p>Титульна сторінка гайду</p></div>
+<!-- ============ HEADER ============ -->
+<header id="hdr">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="EarnIt — на початок">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 120 120" width="40" height="40">
+          <rect x="0" y="0" width="120" height="120" rx="28" fill="#4F3FD4"/>
+          <circle cx="60" cy="60" r="42" fill="#F5A623"/>
+          <circle cx="60" cy="60" r="30" fill="#F9C55A"/>
+          <ellipse cx="51" cy="46" rx="9" ry="6" fill="#FDE59A" opacity="0.7"/>
+          <path d="M60 40 L72 58 L66 58 L66 80 L54 80 L54 58 L48 58 Z" fill="#4F3FD4"/>
+        </svg>
+      </span>
+      <span class="word"><span class="e">Earn</span><span class="i">It</span></span>
+    </a>
+    <a href="#buy" class="btn btn-gold nav-cta">Купити</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">Система, яка будує характер</span>
+        <h1>Дитину складно <span class="hl">відірвати</span> від екрану?</h1>
+        <p class="lead">«Прибери в кімнаті», «сідай за уроки», «поклади телефон»… EarnIt — проста система сімейної економіки, за якою дитина сама береться за справи.</p>
+        <div class="hero-cta">
+          <a href="#buy" class="btn btn-gold btn-lg">Купити за 199&nbsp;₴
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <span class="hero-price-note">Разова оплата · доступ до PDF гайду</span>
+        </div>
+        <div class="trust">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Готово до друку вдома</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Налаштування за 1 вечір</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Українською</span>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <span class="ring a"></span>
+        <span class="ring b"></span>
+        <svg class="coin-big" viewBox="0 0 200 200">
+          <defs>
+            <radialGradient id="cg" cx="42%" cy="38%" r="70%">
+              <stop offset="0%" stop-color="#FDE59A"/>
+              <stop offset="55%" stop-color="#F9C55A"/>
+              <stop offset="100%" stop-color="#F5A623"/>
+            </radialGradient>
+          </defs>
+          <circle cx="100" cy="100" r="92" fill="#E2901A"/>
+          <circle cx="100" cy="100" r="84" fill="url(#cg)"/>
+          <circle cx="100" cy="100" r="66" fill="none" stroke="#E2901A" stroke-width="3" opacity=".5"/>
+          <ellipse cx="76" cy="68" rx="18" ry="12" fill="#FFF3D0" opacity=".65"/>
+          <path d="M100 58 L128 96 L114 96 L114 142 L86 142 L86 96 L72 96 Z" fill="#4F3FD4"/>
+        </svg>
+        <div class="float-chip c1"><span class="dot" style="background:#E2F3EA;color:#2F9E64"><svg viewBox="0 0 24 24" width="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Завдання виконано</div>
+        <div class="float-chip c2"><span class="dot" style="background:#FEF6E2;color:#E2901A"><svg viewBox="0 0 24 24" width="16" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.2c0-1.1 1-1.8 2.5-1.8s2.5.8 2.5 1.9c0 2.2-5 1.1-5 3.4 0 1.1 1 1.9 2.5 1.9s2.5-.7 2.5-1.8" stroke-linecap="round"/></svg></span>+5 монет</div>
+      </div>
+    </div>
+    <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 80 L0 40 C240 78 480 78 720 44 C960 10 1200 10 1440 40 L1440 80 Z" fill="#ffffff"/></svg>
+  </section>
+
+  <!-- ============ PROBLEM ============ -->
+  <section class="sec problem" id="problem">
+    <div class="wrap">
+      <div class="p-grid">
+        <div class="reveal">
+          <span class="kicker">Знайомо?</span>
+          <blockquote>Дитину не цікавить <span class="mark">нічого</span> — тільки телефон. Домашні обов'язки, уроки, спорт чи звичайна прогулянка — усе викликає супротив.</blockquote>
+          <p>Ви не самі. І справа не в тому, що дитина «лінива». Просто в неї немає власної причини діяти — усе тримається на вашому контролі. А контроль — це виснаження щовечора.</p>
+        </div>
+        <div class="pain-list reveal">
+          <div class="pain-item"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span><p>Нагадуєте по десять разів</p></div>
+          <div class="pain-item"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span><p>Гроші «на кишенькові» зникають, а вдячності — нуль</p></div>
+          <div class="pain-item"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span><p>Кожне прохання перетворюється на суперечку</p></div>
+          <div class="pain-item"><span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span><p>Хочеться навчити цінувати працю й гроші — але незрозуміло, з чого почати</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AUTHOR ============ -->
+  <section class="sec" id="author">
+    <div class="wrap">
+      <div class="author-card reveal">
+        <div class="author-photo"><img src="assets/author-zhanna.jpg" alt="Жанна з дітьми" loading="lazy"></div>
+        <div class="author-copy">
+          <span class="kicker">Авторка</span>
+          <h2>Мене звати Жанна, і я мама трьох дітей</h2>
+          <p>Усе, що є в цьому гайді, я спершу перевірила на власній родині — кожне завдання, кожну ціну, кожну пораду. Тут немає теорії заради теорії.</p>
+          <p>Тільки принципи, що справді працюють уже рік у реальній родині.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOLUTION + STEPS ============ -->
+  <section class="sec tint" id="how">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Рішення</span>
+        <h2 class="reveal">Проста система, яка працює</h2>
+        <p class="sub reveal">Дитина отримує монети за свої зусилля, а не просто так. Три прості кроки, зрозумілі і дитині, і батькам, — а правила працюють замість щоденного контролю.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <span class="num">Крок 1</span>
+          <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+          <h3>Дитина виконує завдання</h3>
+          <p>Прибирання, читання, допомога мамі. Список завдань зрозумілий дитині.</p>
+        </div>
+        <div class="step reveal">
+          <span class="num">Крок 2</span>
+          <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8.2l3.4 4.4h-2v3.2h-2.8v-3.2h-2z" fill="currentColor" stroke="none"/></svg></span>
+          <h3>Отримає монети</h3>
+          <p>За виконання завдання дитина одразу отримає монети. Дитина бачить свій прогрес.</p>
+        </div>
+        <div class="step reveal">
+          <span class="num">Крок 3</span>
+          <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg></span>
+          <h3>Обирає винагороду</h3>
+          <p>За накопичені монети дитина обирає нагороду зі списку. Дитина вчиться чекати, планувати й цінувати.</p>
+        </div>
+      </div>
+      <p class="step-arrow-note reveal">Результат: <b>перші зміни — за 7 днів</b>. Дитина бачить прямий зв'язок між своїми діями і отриманою нагородою.</p>
+    </div>
+  </section>
+
+  <!-- ============ WHAT'S INSIDE ============ -->
+  <section class="sec" id="inside">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Що всередині</span>
+        <h2 class="reveal">Продумана система у двох файлах</h2>
+        <p class="sub reveal">Гайд-інструкція для батьків і матеріали для друку для щоденного використання і відслідковування результатів.</p>
+      </div>
+      <div class="inside-grid">
+        <div class="inside-card reveal">
+          <div class="inside-shot"><img src="assets/guide-inside.png" alt="Сторінка гайду для батьків EarnIt — зміст розділів"></div>
+          <div class="inside-body">
+            <span class="tag">PDF-гайд</span>
+            <h3>Гайд для батьків</h3>
+            <p>Покроково: скільки давати монет, за які завдання платити, а за які — ні, як не зірватися й не перетворити систему на підкуп.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Скільки платити монет за завдання</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>За які задачі платити — а за які ні</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Як не зриватися і не перетворити систему на підкуп</li>
+            </ul>
+          </div>
+        </div>
+        <div class="inside-card reveal fade-bottom">
+          <div class="inside-shot"><img src="assets/materials-inside.png" alt="Список завдань — матеріал для друку EarnIt"></div>
+          <div class="inside-body">
+            <span class="tag">Друк вдома</span>
+            <h3>Матеріали для друку</h3>
+            <p>Трекер завдань, облік кишенькових, робочі листи та іграшкові монети для вирізання — усе на A4.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Трекер завдань і монет</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Іграшкові гроші для вирізання</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Робочі листи тижня</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOR WHOM ============ -->
+  <section class="sec tint" id="whom">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Для кого</span>
+        <h2 class="reveal">Чи підійде вам EarnIt?</h2>
+      </div>
+      <div class="whom-grid">
+        <div class="whom-col yes reveal">
+          <h3><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Підходить, якщо</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Дитині 7–10 років</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Втомилися нагадувати про справи по сто разів</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Хочете навчити дитину цінувати гроші й працю</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Хочете зменшити екранний час — щоб дитина цінувала його й мала заняття поза телефоном</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Готові приділити один вечір, щоб усе налаштувати</li>
+          </ul>
+        </div>
+        <div class="whom-col no reveal">
+          <h3><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg></span>Ще рано, якщо</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>Дитині менше 6 років — гра з грошима поки заскладна</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>Шукаєте застосунок «натиснув — і само» без вашої участі</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>Не готові бути послідовними бодай пару тижнів</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY COINS ============ -->
+  <section class="sec" id="why">
+    <div class="wrap">
+      <div class="why reveal">
+        <div class="coin-rain" id="coinRain"></div>
+        <div class="why-inner">
+          <div class="why-coin" aria-hidden="true">
+            <svg class="mainc" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="92" fill="#E2901A"/>
+              <circle cx="100" cy="100" r="84" fill="url(#cg)"/>
+              <circle cx="100" cy="100" r="66" fill="none" stroke="#E2901A" stroke-width="3" opacity=".5"/>
+              <ellipse cx="76" cy="68" rx="18" ry="12" fill="#FFF3D0" opacity=".65"/>
+              <path d="M100 58 L128 96 L114 96 L114 142 L86 142 L86 96 L72 96 Z" fill="#4F3FD4"/>
+            </svg>
+          </div>
+          <div>
+            <span class="kicker">Чому монети, а не гроші?</span>
+            <h2>Монети зберігають «режим гри»</h2>
+            <p>Умовні монети перетворюють обов'язки на гру. Дитина не торгується і не знецінює зусилля — просто грає й одночасно вчиться відповідальності. Дитина заробляє умовні монети, а не реальні гроші — тож не порівнює їх із реальними цінами.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRICE ============ -->
+  <section class="sec tint price" id="buy">
+    <div class="wrap center" style="width:100%">
+      <span class="kicker">Вартість</span>
+      <h2 class="reveal" style="margin-bottom:36px">Одна оплата — і система ваша назавжди</h2>
+      <div class="price-card reveal">
+        <div class="price-inc">
+          <span class="ribbon">Що входить</span>
+          <h3>Повний комплект EarnIt</h3>
+          <ul class="price-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>PDF-гайд для батьків</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Трекер завдань і облік кишенькових</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Іграшкові монети для вирізання</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Робочі листи тижня</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Доступ одразу після оплати</li>
+          </ul>
+        </div>
+        <div class="price-buy">
+          <div class="price-amt"><span class="num">199</span><span class="cur">грн</span></div>
+          <div class="price-old">разова оплата, без підписок</div>
+          <a href="#buy" class="btn btn-gold btn-lg">Купити за 199&nbsp;₴</a>
+          <p class="price-fine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Безпечна оплата · LiqPay · Apple&nbsp;Pay / Google&nbsp;Pay</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  <section class="sec" id="reviews">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Відгуки</span>
+        <h2 class="reveal">Що кажуть батьки</h2>
+        <p class="sub reveal">Реальні відгуки від батьків.</p>
+      </div>
+      <div class="reviews-grid">
+        <div class="review reveal">
+          <div class="stars" aria-label="5 з 5">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg>
+          </div>
+          <p>Донька дуже багато часу проводила з планшетом, важко було знайти чим смотивувати робити уроки чи читати без скандалів, а з цією системою вдалося налагодити, дякую вам!</p>
+          <div class="who"><span class="av" aria-hidden="true">О</span><span><b>Оксана, Львів</b><span>мама, донька 8 років</span></span></div>
+        </div>
+        <div class="review reveal">
+          <div class="stars" aria-label="5 з 5"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg></div>
+          <p>У сину були проблеми з порядком у кімнаті, вдалося привчити прибирати зразу після його творчості. Адаптація дитини зайняла близько тижня</p>
+          <div class="who"><span class="av" aria-hidden="true">І</span><span><b>Ірина, Дніпро</b><span>мама, син 9 років</span></span></div>
+        </div>
+        <div class="review reveal">
+          <div class="stars" aria-label="5 з 5"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg></div>
+          <p>У дітей невелика різниця і були постійні конфлікти, систему запровадила для обох зразу і тепер конфліктів стало менше, діти часто працюють в команді щоб заробити на те що вони люблять</p>
+          <div class="who"><span class="av" aria-hidden="true">Н</span><span><b>Наталія, Київ</b><span>мама двох дітей</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="sec tint" id="faq">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Питання</span>
+        <h2 class="reveal">Часті запитання</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item reveal"><summary>Що саме я отримую після оплати?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary><div class="faq-anim"><div class="faq-inner"><div class="ans">Повний комплект у PDF: гайд для батьків і всі матеріали для друку (трекер, облік кишенькових, робочі листи та іграшкові монети). Після оплати гайд і всі файли приходять вам на електронну пошту — завантажуєте й друкуєте вдома.</div></div></div></details>
+        <details class="faq-item reveal"><summary>Скільки часу треба, щоб почати?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary><div class="faq-anim"><div class="faq-inner"><div class="ans">Один вечір. Прочитати гайд, роздрукувати матеріали, обговорити правила з дитиною — і вже завтра запроваджуєте систему. У гайді є поради для різних характерів дітей, щоб обрати правильний підхід до дитини для м`якої адаптації. Перші зміни зазвичай помітні за 7 днів.</div></div></div></details>
+        <details class="faq-item reveal"><summary>Чи можна адаптувати систему під свою сім'ю?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary><div class="faq-anim"><div class="faq-inner"><div class="ans">Так, і це головна перевага. Система гнучка: ви самі додаєте власні пункти у завдання для дитини, у магазин винагород і в штрафи — під ваші конкретні потреби, цінності та очікування. У гайді показано, як це зробити, щоб система працювала саме для вашої дитини.</div></div></div></details>
+        <details class="faq-item reveal"><summary>Для якого віку підходить?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary><div class="faq-anim"><div class="faq-inner"><div class="ans">Саме ця система найкраще підходить для дітей 7–10 років. У цьому віці дитина вже розуміє гру з монетами й накопиченням, але ще охоче включається в сімейні правила. Системи для інших вікових категорій у розробці.</div></div></div></details>
+        <details class="faq-item reveal"><summary>Це не привчить дитину все робити тільки за гроші?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary><div class="faq-anim"><div class="faq-inner"><div class="ans">Ні — і про це є окремий розділ в гайді. Є базові речі, які дитина завжди отримує безумовно, без жодної оплати: безпеку, турботу, їжу та любов. А монети дитина заробляє лише за додаткові зусилля. Так система вчить різниці між обов'язком і заробітком, а не перетворює побут на прайс-лист.</div></div></div></details>
+        <details class="faq-item reveal"><summary>Мені потрібен принтер?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary><div class="faq-anim"><div class="faq-inner"><div class="ans">Домашнього принтера достатньо, бажано друкувати у кольоры. Можна роздрукувати у будь-якому копі-центрі.</div></div></div></details>
+        <details class="faq-item reveal"><summary>Чи можна повернути кошти?<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></summary><div class="faq-anim"><div class="faq-inner"><div class="ans">Це цифровий продукт із доступом після оплати. Якщо файли не завантажилися або виникла технічна проблема — напишіть нам, і ми все вирішимо. Якщо вам не підійшла система - повернення коштів у продовж 14 днів.</div></div></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="final" id="start">
+    <div class="wrap">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 120 120" width="64" height="64">
+          <rect x="0" y="0" width="120" height="120" rx="28" fill="#ffffff" opacity="0.16"/>
+          <circle cx="60" cy="60" r="42" fill="#F5A623"/>
+          <circle cx="60" cy="60" r="30" fill="#F9C55A"/>
+          <path d="M60 40 L72 58 L66 58 L66 80 L54 80 L54 58 L48 58 Z" fill="#4F3FD4"/>
+        </svg>
+      </span>
+      <h2>Запустіть систему вже сьогодні ввечері</h2>
+      <p>Один вечір на налаштування, тиждень на адаптацію і щоденні крики і постійні нагадування залишаються в минулому.</p>
+      <a href="#buy" class="btn btn-gold btn-lg">Купити за 199&nbsp;₴
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
-      <a class="tpl" href="templates/tracker.html">
-        <div class="thumb"><iframe src="templates/tracker.html" scrolling="no" tabindex="-1"></iframe></div>
-        <div class="cap"><h3>Трекер тижня</h3><p>Завдання × дні з відмітками</p></div>
-      </a>
-      <a class="tpl" href="templates/allowance.html">
-        <div class="thumb"><iframe src="templates/allowance.html" scrolling="no" tabindex="-1"></iframe></div>
-        <div class="cap"><h3>Кишенькові гроші</h3><p>Облік надходжень і витрат</p></div>
-      </a>
-      <a class="tpl" href="templates/checklist.html">
-        <div class="thumb"><iframe src="templates/checklist.html" scrolling="no" tabindex="-1"></iframe></div>
-        <div class="cap"><h3>Робочий лист</h3><p>Чек-лист + план покупки</p></div>
-      </a>
-      <a class="tpl" href="templates/parent-guide.html">
-        <div class="thumb"><iframe src="templates/parent-guide.html" scrolling="no" tabindex="-1"></iframe></div>
-        <div class="cap"><h3>Сторінка гайду</h3><p>Текст + таблиця для батьків</p></div>
-      </a>
-      <a class="tpl" href="templates/play-money.html">
-        <div class="thumb"><iframe src="templates/play-money.html" scrolling="no" tabindex="-1"></iframe></div>
-        <div class="cap"><h3>Гроші для вирізання</h3><p>Іграшкові банкноти EarnIt</p></div>
-      </a>
+      <p class="slogan">EarnIt — система, яка будує характер.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="word"><span class="e">Earn</span><span class="i">It</span></span>
+        <p>Сімейна економіка для дітей 7–10 років. Проста система, за якою дитина сама вчиться поводитися з грошима й обов'язками.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h4>Продукт</h4>
+          <a href="#how">Як це працює</a>
+          <a href="#inside">Що всередині</a>
+          <a href="#buy">Ціна</a>
+          <a href="#faq">Питання</a>
+        </div>
+        <div class="foot-col">
+          <h4>Контакти</h4>
+          <a href="mailto:hello@earnit.com.ua">hello@earnit.com.ua</a>
+          <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://t.me" target="_blank" rel="noopener">Telegram</a>
+        </div>
+        <div class="foot-col">
+          <h4>Правове</h4>
+          <a href="oferta.html">Договір оферти</a>
+          <a href="privacy.html">Політика конфіденційності</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr">2026</span> EarnIt. Усі права захищено.</span>
+      <span>Зроблено з турботою про сім'ї в Україні 🇺🇦</span>
     </div>
   </div>
+</footer>
+
+<script>
+  // year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // sticky header shadow
+  var hdr = document.getElementById('hdr');
+  var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // scroll reveal
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reveals = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+
+  // FAQ: smooth single-open accordion. Height animates via grid-template-rows on .faq-anim.
+  var faqs = document.querySelectorAll('.faq-item');
+  faqs.forEach(function (d) {
+    var summary = d.querySelector('summary');
+    var anim = d.querySelector('.faq-anim');
+    summary.addEventListener('click', function (e) {
+      e.preventDefault();
+      var isOpen = anim.classList.contains('opening');
+      if (isOpen) {
+        anim.classList.remove('opening');
+        var done = function () { d.removeAttribute('open'); anim.removeEventListener('transitionend', done); };
+        anim.addEventListener('transitionend', done);
+      } else {
+        faqs.forEach(function (o) {
+          if (o !== d) { o.querySelector('.faq-anim').classList.remove('opening'); o.removeAttribute('open'); }
+        });
+        d.setAttribute('open', '');
+        requestAnimationFrame(function () { anim.classList.add('opening'); });
+      }
+    });
+  });
+  // coin rain in the "why coins" block
+  (function () {
+    var rain = document.getElementById('coinRain');
+    if (!rain || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var coin = '<svg viewBox="0 0 24 24" width="100%" height="100%"><circle cx="12" cy="12" r="11" fill="#E2901A"/><circle cx="12" cy="12" r="9" fill="#F9C55A"/><path d="M12 6.5l3.6 4.8h-2.2v4.2h-2.8v-4.2H8.4z" fill="#4F3FD4"/></svg>';
+    for (var i = 0; i < 22; i++) {
+      var c = document.createElement('span');
+      c.className = 'fc' + (i % 2 ? ' rev' : '');
+      c.innerHTML = coin;
+      var sz = 20 + Math.random() * 26;
+      c.style.left = Math.random() * 100 + '%';
+      c.style.width = sz + 'px'; c.style.height = sz + 'px';
+      c.style.setProperty('--fall', (rain.offsetHeight + 80) + 'px');
+      var dur = 3.5 + Math.random() * 3.5;
+      c.style.animationDuration = dur + 's';
+      c.style.animationDelay = (-Math.random() * 6) + 's';
+      c.firstChild.style.animationDuration = (1.8 + Math.random() * 1.8) + 's';
+      rain.appendChild(c);
+    }
+  })();
+</script>
 </body>
 </html>
