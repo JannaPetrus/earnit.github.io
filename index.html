@@ -819,11 +819,15 @@
   })();
 
   // buy modal (markup lives after this script, so wait for parse)
+
+  // ⬇️ КРОК 7/8: після деплою замінити на реальний URL create-воркера
+  var CREATE_URL = 'https://earnit-create.jannapetrus.workers.dev';
+
   document.addEventListener('DOMContentLoaded', function () {
     var back = document.getElementById('buyModal'), card = document.getElementById('buyCard');
     var form = document.getElementById('buyForm'), lastFocus = null;
     function openM(e) { e.preventDefault(); lastFocus = document.activeElement; back.classList.add('on'); document.body.style.overflow = 'hidden'; setTimeout(function () { document.getElementById('bName').focus(); }, 220); }
-    function closeM() { back.classList.remove('on'); document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); setTimeout(function () { card.classList.remove('done'); form.reset(); form.querySelectorAll('.m-field').forEach(function (f) { f.classList.remove('err'); }); }, 280); }
+    function closeM() { back.classList.remove('on'); document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); setTimeout(function () { card.classList.remove('done'); form.reset(); form.querySelectorAll('.m-field').forEach(function (f) { f.classList.remove('err'); }); document.getElementById('buyFormErr').hidden = true; }, 280); }
     document.querySelectorAll('[data-buy]').forEach(function (b) { b.addEventListener('click', openM); });
     document.getElementById('buyClose').addEventListener('click', closeM);
     back.addEventListener('click', function (e) { if (e.target === back) closeM(); });
@@ -831,17 +835,41 @@
     form.querySelectorAll('input').forEach(function (i) { i.addEventListener('input', function () { i.closest('.m-field').classList.remove('err'); }); });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var name = document.getElementById('bName'), phone = document.getElementById('bPhone'), mail = document.getElementById('bEmail');
-      var digits = phone.value.replace(/[^0-9]/g, '');
-      var checks = [[name, name.value.trim().length >= 2], [phone, digits.length >= 9], [mail, /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(mail.value.trim())]];
+      var nameEl = document.getElementById('bName'), phoneEl = document.getElementById('bPhone'), mailEl = document.getElementById('bEmail');
+      var digits = phoneEl.value.replace(/[^0-9]/g, '');
+      var checks = [[nameEl, nameEl.value.trim().length >= 2], [phoneEl, digits.length >= 9], [mailEl, /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(mailEl.value.trim())]];
       var ok = true;
       checks.forEach(function (c) { var f = c[0].closest('.m-field'); f.classList.toggle('err', !c[1]); if (!c[1] && ok) { c[0].focus(); ok = false; } });
       if (!ok) return;
-      document.getElementById('doneName').textContent = name.value.trim();
-      document.getElementById('doneMail').textContent = mail.value.trim();
-      card.classList.add('done'); card.scrollTop = 0;
-      // TODO: замінити на редірект у LiqPay:
-      // window.location.href = 'https://www.liqpay.ua/...';
+
+      var btn = form.querySelector('[type=submit]');
+      var errEl = document.getElementById('buyFormErr');
+      errEl.hidden = true;
+      btn.disabled = true;
+      btn.textContent = 'Завантаження…';
+
+      fetch(CREATE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: nameEl.value.trim(), email: mailEl.value.trim() }),
+      })
+        .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, d: d }; }); })
+        .then(function (r) {
+          if (!r.ok || !r.d.data || !r.d.signature) throw new Error(r.d && r.d.error ? r.d.error : 'Помилка сервера');
+          var f = document.createElement('form');
+          f.method = 'POST';
+          f.action = 'https://www.liqpay.ua/api/3/checkout';
+          f.acceptCharset = 'utf-8';
+          f.innerHTML = '<input type="hidden" name="data" value="' + r.d.data + '"><input type="hidden" name="signature" value="' + r.d.signature + '">';
+          document.body.appendChild(f);
+          f.submit();
+        })
+        .catch(function (err) {
+          btn.disabled = false;
+          btn.textContent = 'Перейти до оплати';
+          errEl.textContent = 'Помилка: ' + err.message + '. Спробуйте ще раз або напишіть на hello@earnit.com.ua';
+          errEl.hidden = false;
+        });
     });
   });
 </script>
@@ -856,6 +884,7 @@
       <div class="m-field"><label for="bName">Ім'я</label><input id="bName" name="name" type="text" autocomplete="name" placeholder="Олена"><span class="msg">Вкажіть, будь ласка, ім'я</span></div>
       <div class="m-field"><label for="bPhone">Телефон</label><input id="bPhone" name="phone" type="tel" autocomplete="tel" placeholder="+380 67 123 45 67"><span class="msg">Вкажіть коректний номер телефону</span></div>
       <div class="m-field"><label for="bEmail">Email</label><input id="bEmail" name="email" type="email" autocomplete="email" placeholder="olena@example.com"><span class="msg">Вкажіть коректну електронну пошту</span></div>
+      <p id="buyFormErr" hidden style="color:#854F0B;background:#FAEEDA;border-radius:10px;padding:10px 13px;font-size:13.5px;margin:0"></p>
       <button type="submit" class="btn btn-gold btn-lg">Перейти до оплати</button>
     </form>
     <div class="m-pay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Безпечна оплата через <b>LiqPay</b> — сервіс ПриватБанку</span></div>
