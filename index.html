@@ -485,7 +485,7 @@
       <div class="center">
         <span class="kicker">Рішення</span>
         <h2 class="reveal">Проста система, яка працює</h2>
-        <p class="sub reveal">Дитина отримує монети за свої зусилля. Три прості кроки, зрозумілі і дитині, і батькам, — а правила працюють замість щоденного контролю.</p>
+        <p class="sub reveal">Дитина отримує ігрові монети за свої зусилля. Три прості кроки, зрозумілі і дитині, і батькам, — а правила працюють замість щоденного контролю.</p>
       </div>
       <div class="steps">
         <div class="step reveal">
@@ -497,14 +497,14 @@
         <div class="step reveal">
           <span class="num">Крок 2</span>
           <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8.2l3.4 4.4h-2v3.2h-2.8v-3.2h-2z" fill="currentColor" stroke="none"/></svg></span>
-          <h3>Отримає монети</h3>
-          <p>За виконання завдання дитина одразу отримає монети. Дитина бачить свій прогрес.</p>
+          <h3>Заробляє ігрові монети</h3>
+          <p>За виконання завдання дитина одразу заробляє ігрові монети. Дитина бачить свій прогрес.</p>
         </div>
         <div class="step reveal">
           <span class="num">Крок 3</span>
           <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.4 6L12 16.9 6.5 19.3l1.4-6L3.3 9.2l6.1-.6z"/></svg></span>
           <h3>Обирає винагороду</h3>
-          <p>За накопичені монети дитина обирає нагороду зі списку. Дитина вчиться чекати, планувати й цінувати.</p>
+          <p>За накопичені ігрові монети дитина обирає нагороду зі списку. Дитина вчиться чекати, планувати й цінувати.</p>
         </div>
       </div>
       <p class="step-arrow-note reveal">Результат: <b>перші зміни — за 7 днів</b>. Дитина бачить прямий зв'язок між своїми діями і отриманою нагородою.</p>
@@ -596,9 +596,9 @@
             </svg>
           </div>
           <div>
-            <span class="kicker">Чому монети, а не гроші?</span>
-            <h2>Монети зберігають «режим гри»</h2>
-            <p>Умовні монети перетворюють обов'язки на гру. Дитина не торгується і не знецінює зусилля — просто грає й одночасно вчиться відповідальності. Дитина заробляє умовні монети, а не реальні гроші — тож не порівнює їх із реальними цінами.</p>
+            <span class="kicker">Чому ігрові монети, а не гроші?</span>
+            <h2>Ігрові монети зберігають «режим гри»</h2>
+            <p>Умовні ігрові монети перетворюють обов'язки на гру. Дитина не торгується і не знецінює зусилля — просто грає й одночасно вчиться відповідальності. Дитина заробляє паперові ігрові монети, а не реальні гроші — тож не порівнює їх із реальними цінами.</p>
           </div>
         </div>
       </div>
@@ -627,8 +627,7 @@
           <div class="price-amt"><span class="num">199</span><span class="cur">грн</span></div>
           <div class="price-old">разова оплата, без підписок</div>
           <div class="slots">
-            <div class="slots-top"><span>Стартова ціна для перших 50 родин</span><b><span data-slots-left>50</span>&nbsp;/&nbsp;50</b></div>
-            <div class="slots-bar"><i data-slots-bar style="width:0%"></i></div>
+            <div class="slots-top"><span>🎉 Стартова ціна для перших 50 родин</span></div>
           </div>
           <button type="button" data-buy class="btn btn-gold btn-lg">Купити за 199&nbsp;₴</button>
           <p class="price-fine">
@@ -650,7 +649,7 @@
       <div class="center">
         <span class="kicker">Відгуки</span>
         <h2 class="reveal">Що кажуть батьки</h2>
-        <p class="sub reveal">Реальні відгуки від батьків.</p>
+        <p class="sub reveal">Відгуки від батьків, які вже запустили систему. Імена змінено на прохання авторів.</p>
       </div>
       <div class="reviews-grid">
         <div class="review reveal">
@@ -720,7 +719,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <span class="word"><span class="e">Earn</span><span class="i">It</span></span>
-        <p>Сімейна економіка для дітей 7–10 років. Проста система, за якою дитина сама вчиться поводитися з грошима й обов'язками.</p>
+        <p>Освітня система мотивації для дітей 7–10 років. Проста гра, за якою дитина сама вчиться відповідальності та плануванню.</p>
       </div>
       <div class="foot-links">
         <div class="foot-col">
@@ -825,15 +824,6 @@
     }
   })();
 
-  // launch pricing: update SOLD after each real purchase (0…50). At 50 the price becomes 299 ₴.
-  var SOLD = 0, LIMIT = 50;
-  (function () {
-    var left = Math.max(LIMIT - SOLD, 0);
-    document.querySelectorAll('[data-slots-left]').forEach(function (el) { el.textContent = left; });
-    var bar = document.querySelector('[data-slots-bar]');
-    if (bar) bar.style.width = Math.min(SOLD / LIMIT * 100, 100) + '%';
-  })();
-
   // buy modal (markup lives after this script, so wait for parse)
 
   // ⬇️ КРОК 7/8: після деплою замінити на реальний URL create-воркера
@@ -895,7 +885,7 @@
     <h3 id="buyTitle">Оформлення замовлення</h3>
     <p class="m-sub">Заповніть дані — і ми надішлемо всі матеріали EarnIt на вашу пошту одразу після оплати.</p>
     <div class="m-sum"><span>EarnIt · повний комплект</span><b><s style="color:#A8A3C4;font-size:15px;font-weight:700;margin-right:7px">299&nbsp;₴</s>199&nbsp;₴</b></div>
-    <p class="m-slots">Стартова ціна — залишилось <span data-slots-left>50</span> із 50 наборів</p>
+    <p class="m-slots">Стартова ціна для перших 50 родин</p>
     <form class="m-form" id="buyForm" novalidate>
       <div class="m-field"><label for="bName">Ім'я</label><input id="bName" name="name" type="text" autocomplete="name" placeholder="Олена"><span class="msg">Вкажіть, будь ласка, ім'я</span></div>
       <div class="m-field"><label for="bPhone">Телефон</label><input id="bPhone" name="phone" type="tel" autocomplete="tel" placeholder="+380 67 123 45 67"><span class="msg">Вкажіть коректний номер телефону</span></div>
