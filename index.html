@@ -5,6 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EarnIt — система, яка будує характер</title>
 <meta name="description" content="EarnIt — освітній PDF-гайд для батьків дітей 7–10 років. Система мотивації через умовні бали (не реальні гроші) та список завдань. Роздруковуєте і запускаєте за один вечір.">
+<link rel="canonical" href="https://earnit.com.ua/">
+<!-- Превʼю при поширенні в Telegram, Instagram, Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="EarnIt">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:url" content="https://earnit.com.ua/">
+<meta property="og:title" content="EarnIt — система, яка будує характер">
+<meta property="og:description" content="Сімейна економіка для дітей 7–10 років. Завдання, бали, магазин нагород. Роздруковуєте і запускаєте за один вечір.">
+<meta property="og:image" content="https://earnit.com.ua/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="EarnIt — система, яка будує характер. Сімейна економіка для дітей 7–10 років.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EarnIt — система, яка будує характер">
+<meta name="twitter:description" content="Сімейна економіка для дітей 7–10 років. Завдання, бали, магазин нагород.">
+<meta name="twitter:image" content="https://earnit.com.ua/assets/og-cover.png">
 <link rel="icon" href="assets/earnit-favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -857,7 +873,7 @@
       fetch(CREATE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: nameEl.value.trim(), email: mailEl.value.trim() }),
+        body: JSON.stringify({ name: nameEl.value.trim(), email: mailEl.value.trim(), phone: phoneEl.value.trim() }),
       })
         .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, d: d }; }); })
         .then(function (r) {
