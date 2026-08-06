@@ -842,8 +842,12 @@
 
   // buy modal (markup lives after this script, so wait for parse)
 
-  // ⬇️ КРОК 7/8: після деплою замінити на реальний URL create-воркера
   var CREATE_URL = 'https://earnit-create.jannapetrus.workers.dev';
+
+  // ⬇️ ЄДИНИЙ ПЕРЕМИКАЧ ПРОДАЖІВ
+  // false — кнопки збирають email у список очікування (поки немає ПРРО)
+  // true  — кнопки ведуть на оплату WayForPay
+  var SALES_OPEN = false;
 
   document.addEventListener('DOMContentLoaded', function () {
     var back = document.getElementById('buyModal'), card = document.getElementById('buyCard');
@@ -855,11 +859,33 @@
     back.addEventListener('click', function (e) { if (e.target === back) closeM(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && back.classList.contains('on')) closeM(); });
     form.querySelectorAll('input').forEach(function (i) { i.addEventListener('input', function () { i.closest('.m-field').classList.remove('err'); }); });
+
+    // Режим «продажі ще не відкриті»: та сама модалка збирає email.
+    // Усе перемикається назад одним SALES_OPEN = true — розмітку не чіпаємо.
+    if (!SALES_OPEN) {
+      document.querySelectorAll('[data-buy]').forEach(function (b) { b.textContent = 'Повідомити про старт'; });
+      document.getElementById('buyTitle').textContent = 'Повідомимо про старт';
+      card.querySelector('.m-sub').textContent = 'Продажі відкриються найближчими днями. Залиште email — і ви дізнаєтесь першою, щойно все запрацює.';
+      card.querySelector('.m-slots').textContent = 'Стартова ціна 199 ₴ збережеться для тих, хто у списку';
+      document.getElementById('bPhone').closest('.m-field').hidden = true;
+      card.querySelector('.m-pay').hidden = true;
+      card.querySelector('.m-pay-cards').hidden = true;
+      card.querySelector('.m-fine').innerHTML = 'Залишаючи email, ви погоджуєтесь з <a href="privacy.html">політикою конфіденційності</a>.';
+      form.querySelector('[type=submit]').textContent = 'Повідомити мене';
+      // Без імені: кличний відмінок автоматом не побудуєш (Олена→Олено,
+      // Марія→Маріє, Андрій→Андрію), а помилитись в імені — неприємно.
+      card.querySelector('.m-done h3').textContent = 'Дякуємо!';
+      card.querySelector('.m-done p').innerHTML = 'Напишемо на <b id="doneMail"></b>, щойно відкриємо продажі.';
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var nameEl = document.getElementById('bName'), phoneEl = document.getElementById('bPhone'), mailEl = document.getElementById('bEmail');
       var digits = phoneEl.value.replace(/[^0-9]/g, '');
-      var checks = [[nameEl, nameEl.value.trim().length >= 2], [phoneEl, digits.length >= 9], [mailEl, /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(mailEl.value.trim())]];
+      var mailOk = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(mailEl.value.trim());
+      var checks = [[nameEl, nameEl.value.trim().length >= 2], [mailEl, mailOk]];
+      // Телефон потрібен лише для оплати — у списку очікування поле сховане
+      if (SALES_OPEN) checks.splice(1, 0, [phoneEl, digits.length >= 9]);
       var ok = true;
       checks.forEach(function (c) { var f = c[0].closest('.m-field'); f.classList.toggle('err', !c[1]); if (!c[1] && ok) { c[0].focus(); ok = false; } });
       if (!ok) return;
@@ -868,7 +894,28 @@
       var errEl = document.getElementById('buyFormErr');
       errEl.hidden = true;
       btn.disabled = true;
-      btn.textContent = 'Завантаження…';
+      btn.textContent = SALES_OPEN ? 'Завантаження…' : 'Надсилаємо…';
+
+      if (!SALES_OPEN) {
+        fetch(CREATE_URL + '/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: nameEl.value.trim(), email: mailEl.value.trim() }),
+        })
+          .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, d: d }; }); })
+          .then(function (r) {
+            if (!r.ok) throw new Error(r.d && r.d.error ? r.d.error : 'Помилка сервера');
+            document.getElementById('doneMail').textContent = mailEl.value.trim();
+            card.classList.add('done');
+          })
+          .catch(function (err) {
+            btn.disabled = false;
+            btn.textContent = 'Повідомити мене';
+            errEl.textContent = 'Помилка: ' + err.message + '. Спробуйте ще раз або напишіть на earnitsystem@gmail.com';
+            errEl.hidden = false;
+          });
+        return;
+      }
 
       fetch(CREATE_URL, {
         method: 'POST',
