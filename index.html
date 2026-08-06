@@ -648,7 +648,7 @@
           <button type="button" data-buy class="btn btn-gold btn-lg">Купити за 199&nbsp;₴</button>
           <p class="price-fine">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-            Безпечна оплата · LiqPay · Apple&nbsp;Pay / Google&nbsp;Pay
+            Безпечна оплата · WayForPay · Apple&nbsp;Pay / Google&nbsp;Pay
           </p>
           <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px">
             <svg viewBox="0 0 60 38" width="52" height="33" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visa"><rect width="60" height="38" rx="4" fill="#1A1F71"/><text x="30" y="27" font-family="Arial,sans-serif" font-size="19" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">VISA</text></svg>
@@ -877,12 +877,24 @@
       })
         .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, d: d }; }); })
         .then(function (r) {
-          if (!r.ok || !r.d.data || !r.d.signature) throw new Error(r.d && r.d.error ? r.d.error : 'Помилка сервера');
+          if (!r.ok || !r.d.payUrl || !r.d.fields) throw new Error(r.d && r.d.error ? r.d.error : 'Помилка сервера');
           var f = document.createElement('form');
           f.method = 'POST';
-          f.action = 'https://www.liqpay.ua/api/3/checkout';
+          f.action = r.d.payUrl;
           f.acceptCharset = 'utf-8';
-          f.innerHTML = '<input type="hidden" name="data" value="' + r.d.data + '"><input type="hidden" name="signature" value="' + r.d.signature + '">';
+          // Поля будуємо через DOM, а не innerHTML: у назві товару є лапки.
+          // Масиви (товари) WayForPay чекає як productName[], productCount[]…
+          Object.keys(r.d.fields).forEach(function (key) {
+            var raw = r.d.fields[key];
+            var isList = Array.isArray(raw);
+            (isList ? raw : [raw]).forEach(function (val) {
+              var input = document.createElement('input');
+              input.type = 'hidden';
+              input.name = isList ? key + '[]' : key;
+              input.value = val;
+              f.appendChild(input);
+            });
+          });
           document.body.appendChild(f);
           f.submit();
         })
@@ -909,8 +921,8 @@
       <p id="buyFormErr" hidden style="color:#854F0B;background:#FAEEDA;border-radius:10px;padding:10px 13px;font-size:13.5px;margin:0"></p>
       <button type="submit" class="btn btn-gold btn-lg">Перейти до оплати</button>
     </form>
-    <div class="m-pay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Безпечна оплата через <b>LiqPay</b> — сервіс ПриватБанку</span></div>
-    <p class="m-pay-cards">Visa · Mastercard · Apple&nbsp;Pay · Google&nbsp;Pay. Дані картки вводяться на захищеній сторінці LiqPay — ми їх не бачимо і не зберігаємо.</p>
+    <div class="m-pay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Безпечна оплата через <b>WayForPay</b></span></div>
+    <p class="m-pay-cards">Visa · Mastercard · Apple&nbsp;Pay · Google&nbsp;Pay. Дані картки вводяться на захищеній сторінці WayForPay — ми їх не бачимо і не зберігаємо.</p>
     <p class="m-fine">Натискаючи кнопку, ви погоджуєтесь з <a href="oferta.html">договором оферти</a> та <a href="privacy.html">політикою конфіденційності</a>.</p>
     <div class="m-done">
       <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>
