@@ -25,6 +25,32 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- ── Meta Pixel ──────────────────────────────────────────────────────
+     PIXEL_ID береться в Events Manager (Business Suite → All tools →
+     Events Manager → Connect data source → Web → Meta Pixel).
+     Поки тут заглушка, піксель не вантажиться взагалі — щоб не сипати
+     помилки в консоль і не псувати статистику невалідним ID.
+     Замінити в обох місцях: тут і в thank-you/index.html.            -->
+<script>
+  window.EARNIT_PIXEL_ID = '1535041905039113';
+  (function () {
+    if (!/^\d{15,16}$/.test(window.EARNIT_PIXEL_ID)) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', window.EARNIT_PIXEL_ID);
+    fbq('track', 'PageView');
+  })();
+  // Обгортка: якщо піксель не завантажився, події просто ігноруються
+  window.earnitTrack = function (name, params, opts) {
+    if (typeof fbq === 'function') fbq('track', name, params, opts);
+  };
+</script>
+<!-- ── /Meta Pixel ─────────────────────────────────────────────────── -->
+
 <style>
   :root {
     --indigo: #4F3FD4;
@@ -852,7 +878,14 @@
   document.addEventListener('DOMContentLoaded', function () {
     var back = document.getElementById('buyModal'), card = document.getElementById('buyCard');
     var form = document.getElementById('buyForm'), lastFocus = null;
-    function openM(e) { e.preventDefault(); lastFocus = document.activeElement; back.classList.add('on'); document.body.style.overflow = 'hidden'; setTimeout(function () { document.getElementById('bName').focus(); }, 220); }
+    function openM(e) {
+      e.preventDefault(); lastFocus = document.activeElement; back.classList.add('on');
+      document.body.style.overflow = 'hidden';
+      setTimeout(function () { document.getElementById('bName').focus(); }, 220);
+      // Відкриття модалки — найраніший сигнал інтересу. На ньому будується
+      // аудиторія ретаргету, навіть якщо людина не заповнила форму.
+      window.earnitTrack('ViewContent', { content_name: 'EarnIt — повний комплект', value: 199, currency: 'UAH' });
+    }
     function closeM() { back.classList.remove('on'); document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); setTimeout(function () { card.classList.remove('done'); form.reset(); form.querySelectorAll('.m-field').forEach(function (f) { f.classList.remove('err'); }); document.getElementById('buyFormErr').hidden = true; }, 280); }
     document.querySelectorAll('[data-buy]').forEach(function (b) { b.addEventListener('click', openM); });
     document.getElementById('buyClose').addEventListener('click', closeM);
@@ -925,6 +958,20 @@
         .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, d: d }; }); })
         .then(function (r) {
           if (!r.ok || !r.d.payUrl || !r.d.fields) throw new Error(r.d && r.d.error ? r.d.error : 'Помилка сервера');
+
+          // WayForPay повертає покупця на статичну сторінку подяки без жодних
+          // параметрів (воркер робить 303 на /thank-you/), тому номер замовлення
+          // передаємо через localStorage. Там він і стає eventID для Purchase:
+          // без нього Meta порахувала б покупку заново на кожне оновлення сторінки.
+          try {
+            localStorage.setItem('earnit_pending_order', JSON.stringify({
+              ref: r.d.fields.orderReference || String(Date.now()),
+              value: 199, currency: 'UAH', ts: Date.now(),
+            }));
+          } catch (e) { /* приватний режим — не критично, просто не буде Purchase */ }
+
+          window.earnitTrack('InitiateCheckout', { value: 199, currency: 'UAH', num_items: 1 });
+
           var f = document.createElement('form');
           f.method = 'POST';
           f.action = r.d.payUrl;

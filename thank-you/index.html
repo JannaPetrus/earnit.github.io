@@ -10,6 +10,47 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- ── Meta Pixel + подія Purchase ─────────────────────────────────────
+     PIXEL_ID мусить бути такий самий, як в index.html.
+     Purchase відправляється тільки якщо в localStorage лежить замовлення,
+     створене перед переходом на WayForPay. Тобто:
+       • людина, яка відкрила /thank-you/ напряму, покупку не згенерує
+       • оновлення сторінки не подвоїть подію — мітка одразу знімається
+       • eventID = номер замовлення, тому серверна подія з Conversions API
+         (якщо додамо пізніше) склеїться з цією, а не порахується вдруге    -->
+<script>
+  window.EARNIT_PIXEL_ID = '1535041905039113';
+  (function () {
+    if (!/^\d{15,16}$/.test(window.EARNIT_PIXEL_ID)) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', window.EARNIT_PIXEL_ID);
+    fbq('track', 'PageView');
+
+    var order = null;
+    try {
+      var raw = localStorage.getItem('earnit_pending_order');
+      if (raw) {
+        order = JSON.parse(raw);
+        localStorage.removeItem('earnit_pending_order');
+      }
+    } catch (e) { /* приватний режим або зіпсований JSON — просто без Purchase */ }
+
+    // Замовлення старше 2 годин — скоріше за все людина не доплатила,
+    // а зайшла на сторінку пізніше. Такі не рахуємо.
+    if (order && order.ref && Date.now() - (order.ts || 0) < 2 * 60 * 60 * 1000) {
+      fbq('track', 'Purchase',
+        { value: order.value || 199, currency: order.currency || 'UAH', num_items: 1 },
+        { eventID: order.ref });
+    }
+  })();
+</script>
+<!-- ── /Meta Pixel ─────────────────────────────────────────────────── -->
+
 <style>
   :root {
     --indigo: #4F3FD4;
