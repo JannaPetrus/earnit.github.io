@@ -369,10 +369,13 @@
     .hero p.lead { margin-left: auto; margin-right: auto; }
     .hero-cta, .trust { justify-content: center; }
     .hero-what { margin-left: auto; margin-right: auto; text-align: left; }
-    .hero-visual { min-height: 300px; order: -1; overflow: hidden; }
-    .hero-visual .ring.a { width: 100%; height: 100%; }
-    .hero-visual .ring.b { width: 122%; height: 122%; }
-    .float-chip.c1 { left: 0; }
+    /* усе, що вилазить за межі, тут обрізав би overflow — тому тримаємо в межах колонки */
+    .hero-visual { min-height: 300px; order: -1; overflow: hidden; padding: 10px 0; }
+    .hero-visual .ring.a { width: 76%; height: 76%; }
+    .hero-visual .ring.b { width: 92%; height: 92%; }
+    .stacks { width: 84%; margin-inline: auto; }
+    .coin-mini { width: clamp(58px, 16%, 78px); right: 4%; top: 0; }
+    .float-chip.c1 { left: 0; top: 8%; }
     .float-chip.c2 { right: 0; bottom: 26%; }
     .problem .p-grid, .why-inner { grid-template-columns: 1fr; gap: 30px; }
     .why { padding: 44px 32px; }
@@ -392,12 +395,13 @@
     .price-amt .num { font-size: 56px; }
     .final .wrap { padding: 64px 22px; }
     .foot-links { gap: 32px; }
-    .hero-visual { min-height: 300px; overflow: hidden; }
-    .hero-visual .ring.a { width: 92%; height: 92%; }
-    .hero-visual .ring.b { width: 108%; height: 108%; }
+    .hero-visual { min-height: 280px; overflow: hidden; }
+    .hero-visual .ring.a { width: 72%; height: 72%; }
+    .hero-visual .ring.b { width: 88%; height: 88%; }
+    .stacks { width: 88%; }
     .float-chip { font-size: 13px; padding: 9px 13px; }
-    .float-chip.c1 { left: 4%; }
-    .float-chip.c2 { right: 4%; }
+    .float-chip.c1 { left: 0; }
+    .float-chip.c2 { right: 0; }
   }
   /* ---------- buy modal ---------- */
   .m-back { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 20px; background: rgba(26,20,70,.55); backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .22s var(--ease); }
