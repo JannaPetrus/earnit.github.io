@@ -109,7 +109,17 @@
   .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: var(--gold); transform: scaleX(0); transition: transform .2s var(--ease); }
   .nav-links a:hover::after { transform: scaleX(1); }
   .sec, .final, .hero { scroll-margin-top: 84px; }
-  @media (max-width: 900px) { .nav-links { display: none; } }
+  @media (max-width: 900px) {
+    .nav { gap: 12px; }
+    .nav-links { gap: 16px; }
+    .nav-links a { font-size: 14px; white-space: nowrap; }
+  }
+  /* нижче 820 поруч із логотипом і кнопкою вміщаються лише два перші розділи */
+  @media (max-width: 820px) {
+    .nav-links { gap: 12px; }
+    .nav-links a { font-size: 13px; }
+    .nav-links a:nth-child(n+3) { display: none; }
+  }
   .brand { display: flex; align-items: center; gap: 11px; }
   .brand .mark { width: 40px; height: 40px; flex: none; }
   .brand .word { font-weight: 800; font-size: 23px; letter-spacing: -.02em; }
@@ -368,13 +378,16 @@
     .hero .eyebrow { margin-left: auto; margin-right: auto; }
     .hero p.lead { margin-left: auto; margin-right: auto; }
     .hero-cta, .trust { justify-content: center; }
-    .hero-what { margin-left: auto; margin-right: auto; text-align: left; }
-    /* усе, що вилазить за межі, тут обрізав би overflow — тому тримаємо в межах колонки */
-    .hero-visual { min-height: 300px; order: -1; overflow: hidden; padding: 10px 0; }
+    .hero-what { margin-left: auto; margin-right: auto; text-align: left; white-space: nowrap;
+      font-size: 13.5px; padding: 10px 16px 10px 13px; gap: 8px; max-width: 100%; }
+    .hero-what svg { width: 16px; height: 16px; }
+    /* без overflow: інакше зрізає тіні під стопками й верх монети.
+       Горизонтальний виліт і так тримає .hero { overflow: hidden } */
+    .hero-visual { min-height: 300px; order: -1; padding: 10px 0 18px; }
     .hero-visual .ring.a { width: 76%; height: 76%; }
     .hero-visual .ring.b { width: 92%; height: 92%; }
     .stacks { width: 84%; margin-inline: auto; }
-    .coin-mini { width: clamp(58px, 16%, 78px); right: 4%; top: 0; }
+    .coin-mini { width: clamp(58px, 16%, 78px); right: 9%; top: 0; }
     .float-chip.c1 { left: 0; top: 8%; }
     .float-chip.c2 { right: 0; bottom: 26%; }
     .problem .p-grid, .why-inner { grid-template-columns: 1fr; gap: 30px; }
@@ -395,7 +408,7 @@
     .price-amt .num { font-size: 56px; }
     .final .wrap { padding: 64px 22px; }
     .foot-links { gap: 32px; }
-    .hero-visual { min-height: 280px; overflow: hidden; }
+    .hero-visual { min-height: 280px; }
     .hero-visual .ring.a { width: 72%; height: 72%; }
     .hero-visual .ring.b { width: 88%; height: 88%; }
     .stacks { width: 88%; }
@@ -480,7 +493,7 @@
         <p class="lead">EarnIt — проста система сімейної економіки, яка допоможе дитині побудувати внутрішню мотивацію виконувати свої обов'язки.</p>
         <p class="hero-what">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
-          <span><b>Два PDF-файли:</b> гайд для батьків і 7 аркушів для друку</span>
+          <span><b>Два PDF-файли:</b> гайд і 7 аркушів для друку</span>
         </p>
         <div class="hero-cta">
           <button type="button" data-buy class="btn btn-gold btn-lg">Купити за 199&nbsp;₴
