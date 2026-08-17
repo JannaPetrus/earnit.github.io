@@ -50,6 +50,11 @@
   window.earnitTrack = function (name, params, opts) {
     if (typeof fbq === 'function') fbq('track', name, params, opts);
   };
+  // Свої події (глибина прокрутки) йдуть через trackCustom — інакше Meta
+  // не прийме нестандартну назву.
+  window.earnitTrackCustom = function (name, params) {
+    if (typeof fbq === 'function') fbq('trackCustom', name, params || {});
+  };
 </script>
 <!-- ── /Meta Pixel ─────────────────────────────────────────────────── -->
 
@@ -120,6 +125,16 @@
     .nav-links a { font-size: 13px; }
     .nav-links a:nth-child(n+3) { display: none; }
   }
+  /* На телефоні (390–430px) логотип, два розділи й кнопка разом не вміщаються —
+     сумарно виходило 390px при доступних 340. Ховаємо слово «EarnIt»: іконка
+     лишається, а сама назва все одно є в першому ж рядку тексту. */
+  @media (max-width: 480px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .brand .word { display: none; }
+    .nav-links { gap: 10px; }
+    .nav-links a { font-size: 12.5px; }
+    .nav-cta { padding: 10px 16px; font-size: 14px; }
+  }
   .brand { display: flex; align-items: center; gap: 11px; }
   .brand .mark { width: 40px; height: 40px; flex: none; }
   .brand .word { font-weight: 800; font-size: 23px; letter-spacing: -.02em; }
@@ -186,6 +201,26 @@
   @media (prefers-reduced-motion: reduce) {
     .stack, .float-chip, .coin-mini, .hero-visual .ring { animation: none !important; }
   }
+
+  /* ---------- липка кнопка на мобільних ----------
+     Між першим екраном і блоком ціни — десять екранів без жодної кнопки.
+     Ця панель їде разом із людиною й дає купити в будь-який момент. */
+  .sticky-buy { display: none; }
+  @media (max-width: 900px) {
+    .sticky-buy {
+      display: block; position: fixed; z-index: 90; left: 0; right: 0; bottom: 0;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+      background: rgba(255,255,255,.92); backdrop-filter: saturate(160%) blur(12px);
+      border-top: 1px solid var(--line);
+      transform: translateY(110%); transition: transform .28s var(--ease);
+    }
+    .sticky-buy.on { transform: translateY(0); }
+    /* щоб панель не накривала останній рядок підвалу */
+    body { padding-bottom: 76px; }
+    .sticky-buy .btn { width: 100%; justify-content: center; padding: 15px 20px; font-size: 16px; }
+    body.modal-open .sticky-buy { transform: translateY(110%); }
+  }
+  @media (prefers-reduced-motion: reduce) { .sticky-buy { transition: none; } }
 
   .hero-wave { display: block; width: 100%; height: auto; margin-bottom: -6px; }
 
@@ -387,9 +422,9 @@
     .hero-visual .ring.a { width: 76%; height: 76%; }
     .hero-visual .ring.b { width: 92%; height: 92%; }
     .stacks { width: 84%; margin-inline: auto; }
-    .coin-mini { width: clamp(58px, 16%, 78px); right: 9%; top: 0; }
-    .float-chip.c1 { left: 0; top: 8%; }
-    .float-chip.c2 { right: 0; bottom: 26%; }
+    .coin-mini { width: clamp(58px, 16%, 78px); right: 12%; top: 0; }
+    .float-chip.c1 { left: 2%; top: 8%; }
+    .float-chip.c2 { right: 2%; bottom: 26%; }
     .problem .p-grid, .why-inner { grid-template-columns: 1fr; gap: 30px; }
     .why { padding: 44px 32px; }
     .why-coin { order: -1; }
@@ -934,12 +969,13 @@
     function openM(e) {
       e.preventDefault(); lastFocus = document.activeElement; back.classList.add('on');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
       setTimeout(function () { document.getElementById('bName').focus(); }, 220);
       // Відкриття модалки — найраніший сигнал інтересу. На ньому будується
       // аудиторія ретаргету, навіть якщо людина не заповнила форму.
       window.earnitTrack('ViewContent', { content_name: 'EarnIt — повний комплект', value: 199, currency: 'UAH' });
     }
-    function closeM() { back.classList.remove('on'); document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); setTimeout(function () { card.classList.remove('done'); form.reset(); form.querySelectorAll('.m-field').forEach(function (f) { f.classList.remove('err'); }); document.getElementById('buyFormErr').hidden = true; }, 280); }
+    function closeM() { back.classList.remove('on'); document.body.style.overflow = ''; document.body.classList.remove('modal-open'); if (lastFocus) lastFocus.focus(); setTimeout(function () { card.classList.remove('done'); form.reset(); form.querySelectorAll('.m-field').forEach(function (f) { f.classList.remove('err'); }); document.getElementById('buyFormErr').hidden = true; }, 280); }
     document.querySelectorAll('[data-buy]').forEach(function (b) { b.addEventListener('click', openM); });
     document.getElementById('buyClose').addEventListener('click', closeM);
     back.addEventListener('click', function (e) { if (e.target === back) closeM(); });
@@ -1057,7 +1093,62 @@
         });
     });
   });
+
+  // ── Липка кнопка + глибина прокрутки ──────────────────────────────
+  // Кнопка з'являється, щойно людина пішла нижче першого екрана, і ховається
+  // над блоком ціни — там своя кнопка, дві поруч виглядали б настирливо.
+  // Події прокрутки шлемо раз за візит: вони покажуть, скільки людей узагалі
+  // дочитує до місця, де можна купити.
+  document.addEventListener('DOMContentLoaded', function () {
+    var bar = document.getElementById('stickyBuy');
+    var hero = document.querySelector('.hero');
+    var price = document.getElementById('buy');
+    var final = document.getElementById('start');
+    var sent = {};
+
+    function once(name) {
+      if (sent[name]) return;
+      sent[name] = true;
+      window.earnitTrackCustom(name);
+    }
+
+    function update() {
+      if (!bar) return;
+      var pastHero = hero ? window.scrollY > hero.offsetHeight * 0.9 : window.scrollY > 500;
+      // Ховаємо панель там, де на екрані вже є своя кнопка — у блоці ціни
+      // та у фінальному заклику. Дві кнопки поруч виглядають настирливо.
+      var ownButton = [price, final].some(function (el) {
+        if (!el) return false;
+        var r = el.getBoundingClientRect();
+        return r.top < window.innerHeight && r.bottom > 0;
+      });
+      var atPrice = false;
+      if (price) {
+        var rp = price.getBoundingClientRect();
+        atPrice = rp.top < window.innerHeight && rp.bottom > 0;
+      }
+      bar.classList.toggle('on', pastHero && !ownButton);
+
+      var depth = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+      if (depth >= 0.25) once('ScrollQuarter');
+      if (depth >= 0.5) once('ScrollHalf');
+      if (depth >= 0.9) once('ScrollEnd');
+      if (atPrice) once('ReachedPrice');
+    }
+
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () { update(); ticking = false; });
+    }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  });
 </script>
+<div class="sticky-buy" id="stickyBuy">
+  <button type="button" data-buy class="btn btn-gold">Купити за 199&nbsp;₴</button>
+</div>
 <div class="m-back" id="buyModal" role="dialog" aria-modal="true" aria-labelledby="buyTitle">
   <div class="m-card" id="buyCard">
     <button type="button" class="m-close" id="buyClose" aria-label="Закрити"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
