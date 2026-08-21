@@ -44,7 +44,7 @@
     // а зайшла на сторінку пізніше. Такі не рахуємо.
     if (order && order.ref && Date.now() - (order.ts || 0) < 2 * 60 * 60 * 1000) {
       fbq('track', 'Purchase',
-        { value: order.value || 199, currency: order.currency || 'UAH', num_items: 1 },
+        { value: order.value || 399, currency: order.currency || 'UAH', num_items: 1 },
         { eventID: order.ref });
     }
   })();
