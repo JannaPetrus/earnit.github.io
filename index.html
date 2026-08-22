@@ -46,17 +46,58 @@
     fbq('init', window.EARNIT_PIXEL_ID);
     fbq('track', 'PageView');
   })();
-  // Обгортка: якщо піксель не завантажився, події просто ігноруються
+  // Обгортка: одна подія йде і в Meta, і в Google Analytics.
+  // Назви в GA4 інші (snake_case), тому тут таблиця відповідності —
+  // щоб у самому коді сторінки лишався один виклик earnitTrack.
+  var GA_NAMES = {
+    ViewContent: 'view_item',
+    InitiateCheckout: 'begin_checkout',
+    Purchase: 'purchase',
+  };
   window.earnitTrack = function (name, params, opts) {
     if (typeof fbq === 'function') fbq('track', name, params, opts);
+    if (typeof gtag === 'function' && GA_NAMES[name]) {
+      gtag('event', GA_NAMES[name], {
+        currency: (params && params.currency) || 'UAH',
+        value: (params && params.value) || 399,
+        items: [{ item_id: 'earnit-full', item_name: 'EarnIt — повний комплект', price: 399, quantity: 1 }],
+      });
+    }
   };
   // Свої події (глибина прокрутки) йдуть через trackCustom — інакше Meta
-  // не прийме нестандартну назву.
+  // не прийме нестандартну назву. GA4 приймає будь-яку, але тільки
+  // snake_case і до 40 символів.
   window.earnitTrackCustom = function (name, params) {
     if (typeof fbq === 'function') fbq('trackCustom', name, params || {});
+    if (typeof gtag === 'function') {
+      var gaName = name.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase().slice(0, 40);
+      gtag('event', gaName, params || {});
+    }
   };
 </script>
 <!-- ── /Meta Pixel ─────────────────────────────────────────────────── -->
+
+<!-- ── Google Analytics 4 ──────────────────────────────────────────────
+     MEASUREMENT_ID береться в GA: Адміністратор → Потоки даних → Веб →
+     earnit.com.ua. Виглядає як G-1AB2CD34EF.
+     Поки тут заглушка, gtag не вантажиться взагалі — щоб не сипати
+     помилки в консоль і не створювати порожню статистику.
+     Замінити в обох місцях: тут і в thank-you/index.html.            -->
+<script>
+  window.EARNIT_GA_ID = 'G-J92N7WBYR6';
+  (function () {
+    if (!/^G-[A-Z0-9]{6,}$/.test(window.EARNIT_GA_ID)) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.EARNIT_GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', window.EARNIT_GA_ID);
+  })();
+</script>
+<!-- ── /Google Analytics ───────────────────────────────────────────── -->
 
 <style>
   :root {
