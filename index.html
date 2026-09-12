@@ -1161,6 +1161,11 @@
       }
       bar.classList.toggle('on', pastHero && !ownButton);
 
+      // PastHero — єдина подія, що міряє саме перший екран. ScrollQuarter
+      // для цього не годиться: depth рахується від висоти всієї сторінки,
+      // тож чверть на довгій продажній сторінці — це вже кілька екранів.
+      if (pastHero) once('PastHero');
+
       var depth = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
       if (depth >= 0.25) once('ScrollQuarter');
       if (depth >= 0.5) once('ScrollHalf');
