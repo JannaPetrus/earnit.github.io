@@ -53,7 +53,7 @@
     var order = window.EARNIT_ORDER;
     if (order) {
       fbq('track', 'Purchase',
-        { value: order.value || 399, currency: order.currency || 'UAH', num_items: 1 },
+        { value: order.value || 499, currency: order.currency || 'UAH', num_items: 1 },
         { eventID: order.ref });
     }
   })();
@@ -81,9 +81,9 @@
     if (order) {
       gtag('event', 'purchase', {
         transaction_id: order.ref,
-        value: order.value || 399,
+        value: order.value || 499,
         currency: order.currency || 'UAH',
-        items: [{ item_id: 'earnit-full', item_name: 'EarnIt — повний комплект', price: order.value || 399, quantity: 1 }],
+        items: [{ item_id: 'earnit-full', item_name: 'EarnIt — повний комплект', price: order.value || 499, quantity: 1 }],
       });
     }
   })();
