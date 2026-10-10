@@ -988,6 +988,39 @@
 
   // buy modal (markup lives after this script, so wait for parse)
 
+  // ── Звідки прийшов покупець ──────────────────────────────
+  // Meta підставляє назви кампанії й оголошення сама — у полі
+  // «Параметри URL» стоїть utm_campaign={{campaign.name}} і
+  // utm_content={{ad.name}}, тож нові кампанії підхоплюються без правок.
+  //
+  // Кладемо в localStorage на 30 днів: людина часто заходить з реклами,
+  // думає день і повертається прямо за адресою — без цього мітка губиться
+  // саме в тих покупок, які реклама й привела.
+  var EARNIT_SRC = (function () {
+    var KEY = 'earnit_src';
+    var FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+    var fresh = null;
+    try {
+      var q = new URLSearchParams(location.search);
+      for (var i = 0; i < FIELDS.length; i++) {
+        var v = q.get(FIELDS[i]);
+        if (v) { fresh = fresh || {}; fresh[FIELDS[i]] = v.slice(0, 200); }
+      }
+      if (!fresh && q.get('fbclid')) fresh = { utm_source: 'meta', utm_medium: 'paid' };
+    } catch (e) { /* старий браузер — просто без мітки */ }
+
+    try {
+      if (fresh) {
+        fresh.ts = Date.now();
+        localStorage.setItem(KEY, JSON.stringify(fresh));
+        return fresh;
+      }
+      var saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (saved && Date.now() - (saved.ts || 0) < 30 * 24 * 3600 * 1000) return saved;
+    } catch (e) { /* приватний режим — працюємо без мітки */ }
+    return fresh;
+  })();
+
   var CREATE_URL = 'https://earnit-create.jannapetrus.workers.dev';
 
   // ⬇️ ЄДИНИЙ ПЕРЕМИКАЧ ПРОДАЖІВ
@@ -1073,7 +1106,7 @@
       fetch(CREATE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: nameEl.value.trim(), email: mailEl.value.trim(), phone: phoneEl.value.trim() }),
+        body: JSON.stringify({ name: nameEl.value.trim(), email: mailEl.value.trim(), phone: phoneEl.value.trim(), src: EARNIT_SRC }),
       })
         .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, d: d }; }); })
         .then(function (r) {
