@@ -8,38 +8,43 @@
 <link rel="icon" href="assets/earnit-favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{--indigo:#4F3FD4;--indigo-dark:#1A0E6B;--gold:#F5A623;--bg-light:#F5F0FF;--white:#FFF;--text:#221C3A;--text-2:#5F5E5A;--line:#E7E4FA;--maxw:820px}
+  /* Палітра нового лендингу (scripts/landing/design-source.html) */
+  :root{--cream:#FBF6EC;--card:#F6EEE1;--card-line:#EADFCB;--text:#1D2B4F;--muted:#4A5878;--sky:#2988D3;--sky-pressed:#1F6AAB;--sun:#FDBE3D;--sun-light:#F4E1B7;--bubble:#FFF7E6;--brown:#7D4C31;--navy:#1E3F7A;--body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;--maxw:820px}
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-  body{font-family:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--text);background:var(--white);line-height:1.7;font-size:17px;-webkit-font-smoothing:antialiased}
-  a{color:var(--indigo);text-decoration:none}
-  a:hover{color:var(--indigo-dark)}
-  .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 22px}
-  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.86);backdrop-filter:saturate(160%) blur(14px);border-bottom:1px solid var(--line)}
-  .head-in{display:flex;align-items:center;justify-content:space-between;height:66px}
-  .word{font-weight:800;font-size:23px;letter-spacing:-.02em}
-  .word .e{color:var(--indigo)}.word .i{color:var(--gold)}
-  .back{font-weight:600;font-size:15px}
-  .hero{background:var(--bg-light);padding:52px 0 44px;text-align:center}
-  .hero h1{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--indigo-dark)}
-  .hero .upd{margin-top:12px;color:var(--text-2);font-size:15px}
-  main{padding:44px 0 60px}
-  .note{background:#FFF8EC;border:1px solid #F3DFB4;border-radius:14px;padding:16px 20px;color:#6A4B12;font-size:15px;margin-bottom:34px}
-  h2{font-size:22px;font-weight:800;color:var(--indigo-dark);margin:36px 0 12px;letter-spacing:-.01em}
+  body{font-family:var(--body);color:var(--text);background:#fff;line-height:1.7;font-size:17px;-webkit-font-smoothing:antialiased}
+  a{color:var(--sky-pressed);text-decoration:underline;text-underline-offset:2px}
+  a:hover{color:var(--sky)}
+  .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  header{position:sticky;top:0;z-index:10;background:rgba(251,246,236,.97);border-bottom:1px solid var(--card-line);box-shadow:0 6px 18px -8px rgba(125,76,49,.28)}
+  .head-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:block;line-height:0}
+  .logo img{width:104px;height:auto}
+  .back{font-weight:600;font-size:15px;color:var(--text);text-decoration:none}
+  .back:hover{color:var(--sky-pressed)}
+  .hero{background:var(--cream);padding:52px 0 44px;text-align:center;border-bottom:1px solid var(--card-line)}
+  .hero h1{font-size:clamp(28px,5vw,36px);font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--text)}
+  .hero .upd{margin-top:12px;color:var(--muted);font-size:15px}
+  main{padding:44px 0 64px}
+  .note{background:var(--bubble);border:1px solid var(--sun-light);border-radius:14px;padding:16px 20px;color:var(--brown);font-size:15px;margin-bottom:34px}
+  h2{font-size:22px;font-weight:700;color:var(--text);margin:36px 0 12px;letter-spacing:-.01em}
   h2:first-of-type{margin-top:0}
-  p{margin:0 0 14px;color:#33304A}
-  ul{margin:0 0 16px;padding-left:22px}
+  p{margin:0 0 14px;color:var(--muted)}
+  ul{margin:0 0 16px;padding-left:22px;color:var(--muted)}
   li{margin:0 0 8px}
-  .ph{background:#EFEAFE;border-radius:6px;padding:1px 7px;font-weight:600;color:var(--indigo);white-space:nowrap}
-  footer{background:var(--indigo-dark);color:rgba(255,255,255,.7);padding:30px 0;font-size:14px;text-align:center}
-  footer a{color:#fff}
+  li::marker{color:var(--sun)}
+  b,strong{color:var(--text)}
+  .ph{background:var(--card);border-radius:6px;padding:1px 7px;font-weight:600;color:var(--text);white-space:nowrap}
+  footer{background:var(--navy);color:#BAD8EA;padding:30px 0;font-size:14px;text-align:center}
+  footer a{color:var(--sun);text-decoration:none}
+  footer a:hover{color:#fff}
 </style>
 </head>
 <body>
 <header><div class="wrap"><div class="head-in">
-  <a href="index.html" class="word"><span class="e">Earn</span><span class="i">It</span></a>
+  <a href="index.html" class="logo" aria-label="EarnIt, на головну"><img src="assets/email-logo-v2.png" alt="EarnIt" width="104" height="38"></a>
   <a href="index.html" class="back">← На головну</a>
 </div></div></header>
 
