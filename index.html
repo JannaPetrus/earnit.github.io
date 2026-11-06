@@ -110,6 +110,9 @@
 .m-card .m-sub{margin-top:8px;font-size:15px;color:var(--muted);line-height:1.5}
 .m-sum{margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-radius:14px;background:var(--bubble);font-weight:700;font-size:15px;color:var(--text)}
 .m-sum b{font-size:20px}
+.m-alt{margin-top:10px;font-size:13.5px;color:var(--muted);text-align:center}
+.m-alt button{font:inherit;font-weight:700;color:var(--sky-pressed);background:none;border:none;padding:0;text-decoration:underline;cursor:pointer}
+.m-card.done .m-alt{display:none}
 .m-form{margin-top:20px;display:grid;gap:14px}
 .m-field{display:grid;gap:6px}
 .m-field label{font-size:13px;font-weight:700;color:var(--muted)}
@@ -628,7 +631,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
     <nav class="links" aria-label="Розділи">
       <span class="nav-ind" aria-hidden="true"></span><a href="#how">Як працює</a><a href="#inside">Що всередині</a><a href="#fit">Кому підійде</a><a href="#reviews">Відгуки</a><a href="#faq">Питання</a>
     </nav>
-    <a class="b1 small" href="#price">Купити</a>
+    <a class="b1 small" href="#price" data-tier="full">Купити</a>
     <button type="button" class="menu-btn" id="menuBtn" aria-label="Меню" aria-expanded="false" aria-controls="mnav"><svg class="bars" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
   </div>
   <nav class="mnav" id="mnav" aria-label="Розділи"><a href="#how">Як працює</a><a href="#inside">Що всередині</a><a href="#fit">Кому підійде</a><a href="#reviews">Відгуки</a><a href="#faq">Питання</a></nav>
@@ -646,7 +649,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
         <span><b>Гайд для батьків</b> (є версія для телефону) і 15 аркушів для друку</span>
       </div>
       <div class="cta-row">
-        <a class="b1" href="#price">Обрати пакет · від 499 грн</a>
+        <a class="b1" href="#price" data-tier="full">Купити EarnIt · 649 грн</a>
         <p class="refund">Якщо система не підійде — повернемо кошти протягом 14 днів</p>
       </div>
       <div class="chips">
@@ -867,7 +870,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
           <h3>Базовий</h3>
           <p class="tier-sub">PDF-гайд + версія для телефону · 15 аркушів для друку · Telegram-спільнота</p>
           <div class="tier-price">499 <small>грн</small></div>
-          <ul class="tlist"><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Гайд для батьків, 20 сторінок + мобільна версія</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Покроковий план запуску системи за один вечір</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>15 аркушів для друку, поля можна редагувати</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Шкільний блок: ранкові збори, уроки, режим дня</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Ігрові банкноти й монети для вирізання</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Telegram-спільнота, доступ назавжди</span></li><li class="no"><svg width="20" height="20" aria-hidden="true"><use href="#ph-minus"/></svg><span>Готовий текст першої розмови з дитиною<span class="sr"> — немає в цьому пакеті</span></span></li><li class="no"><svg width="20" height="20" aria-hidden="true"><use href="#ph-minus"/></svg><span>Якщо дитина проти: план у три кроки<span class="sr"> — немає в цьому пакеті</span></span></li><li class="no"><svg width="20" height="20" aria-hidden="true"><use href="#ph-minus"/></svg><span>Тато чи бабуся проти? Як домовитися, щоб ніхто не зламав систему<span class="sr"> — немає в цьому пакеті</span></span></li><li class="no"><svg width="20" height="20" aria-hidden="true"><use href="#ph-minus"/></svg><span>Щоб дитині не набридло: чек-лист із 7 питань раз на місяць<span class="sr"> — немає в цьому пакеті</span></span></li></ul>
+          <ul class="tlist"><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Гайд для батьків, 20 сторінок + мобільна версія</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Покроковий план запуску системи за один вечір</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>15 аркушів для друку, поля можна редагувати</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Шкільний блок: ранкові збори, уроки, режим дня</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Ігрові банкноти й монети для вирізання</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Telegram-спільнота, доступ назавжди</span></li></ul>
           <a class="b1 wide ghost" href="#price" data-tier="base">Обрати Базовий</a>
         </article>
         <article class="tier tier-full">
@@ -899,7 +902,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
       <h2>Запустіть систему вже сьогодні ввечері</h2>
       <p>Один вечір на налаштування, тиждень на звикання — і без щоденних нагадувань та криків.</p>
     </div>
-    <a class="b1" href="#price">Обрати пакет · від 499 грн</a>
+    <a class="b1" href="#price" data-tier="full">Купити EarnIt · 649 грн</a>
   </div>
 </section>
 </main>
@@ -1213,13 +1216,35 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
   document.addEventListener('DOMContentLoaded', function () {
     var back = document.getElementById('buyModal'), card = document.getElementById('buyCard');
     var form = document.getElementById('buyForm'), lastFocus = null;
+    // Перемикач Повний ⇄ Базовий у самій формі. Кнопки «Купити» відкривають
+    // форму одразу з Повним, а хто хоче дешевше — перемикається тут, не
+    // повертаючись до блоку цін. Для «Бонусів» (/dodatky) перемикача немає.
+    var alt = document.getElementById('buyAlt');
+    var ALT = {
+      full: ['Без бонусів — ', 'base', 'Базовий за ' + TIERS.base.price + ' ₴'],
+      base: ['З 4 бонусами — ', 'full', 'Повний за ' + TIERS.full.price + ' ₴'],
+    };
+    function setTier(t) {
+      currentTier = t;
+      var tier = TIERS[t];
+      document.getElementById('buySumName').textContent = 'EarnIt · ' + tier.name;
+      document.getElementById('buySumPrice').textContent = tier.price + ' ₴';
+      if (!alt) return;
+      var a = ALT[t];
+      alt.hidden = !a || !SALES_OPEN;
+      alt.textContent = '';
+      if (!a) return;
+      alt.appendChild(document.createTextNode(a[0]));
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = a[2];
+      b.addEventListener('click', function () { setTier(a[1]); });
+      alt.appendChild(b);
+    }
     function openM(e) {
       e.preventDefault(); lastFocus = document.activeElement;
       var t = e.currentTarget && e.currentTarget.getAttribute('data-tier');
-      currentTier = TIERS[t] ? t : 'full';
+      setTier(TIERS[t] ? t : 'full');
       var tier = TIERS[currentTier];
-      document.getElementById('buySumName').textContent = 'EarnIt · ' + tier.name;
-      document.getElementById('buySumPrice').textContent = tier.price + '\u00a0₴';
       back.classList.add('on');
       document.body.style.overflow = 'hidden';
       document.body.classList.add('modal-open');
@@ -1229,8 +1254,9 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
       window.earnitTrack('ViewContent', { content_name: 'EarnIt — ' + tier.name, content_ids: [currentTier], value: tier.price, currency: 'UAH' });
     }
     function closeM() { back.classList.remove('on'); document.body.style.overflow = ''; document.body.classList.remove('modal-open'); if (lastFocus) lastFocus.focus(); setTimeout(function () { card.classList.remove('done'); form.reset(); form.querySelectorAll('.m-field').forEach(function (f) { f.classList.remove('err'); }); document.getElementById('buyFormErr').hidden = true; }, 280); }
-    // Форму відкривають лише кнопки пакетів у блоці ціни. Решта кнопок
-    // («Купити», «Обрати пакет», фінальна) — звичайні посилання на #price.
+    // Форму відкриває кожна кнопка з data-tier: пакети в блоці ціни, а з
+    // 06.11.2026 і «Купити» в шапці, на першому екрані, у фіналі й у липкій
+    // панелі (ті — одразу з Повним). «Пакети» в меню — просто посилання.
     document.querySelectorAll('[data-tier]').forEach(function (b) { b.addEventListener('click', openM); });
     document.getElementById('buyClose').addEventListener('click', closeM);
     back.addEventListener('click', function (e) { if (e.target === back) closeM(); });
@@ -1415,7 +1441,7 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
   });
 </script>
 <div class="sticky-buy" id="stickyBuy">
-  <a class="b1 wide" href="#price">Обрати пакет · від 499&nbsp;₴</a>
+  <a class="b1 wide" href="#price" data-tier="full">Купити EarnIt · 649&nbsp;₴</a>
 </div>
 <script>
 (function () {
@@ -1434,6 +1460,7 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
     <h3 id="buyTitle">Оформлення замовлення</h3>
     <p class="m-sub">Заповніть дані — і ми надішлемо матеріали обраного пакета на вашу пошту одразу після оплати.</p>
     <div class="m-sum"><span id="buySumName">EarnIt · Повний</span><b id="buySumPrice">649&nbsp;₴</b></div>
+    <p class="m-alt" id="buyAlt" hidden></p>
     <form class="m-form" id="buyForm" novalidate>
       <div class="m-field"><label for="bName">Ім'я</label><input id="bName" name="name" type="text" autocomplete="name" placeholder="Олена"><span class="msg">Вкажіть, будь ласка, ім'я</span></div>
       <div class="m-field"><label for="bPhone">Телефон</label><input id="bPhone" name="phone" type="tel" autocomplete="tel" placeholder="+380 67 123 45 67"><span class="msg">Вкажіть коректний номер телефону</span></div>
