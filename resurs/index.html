@@ -147,7 +147,8 @@
 .rs-step{margin-top:22px;padding:20px 22px;border-radius:18px;background:#EAF3DE;border:2px solid #B9D59C}
 .rs-step h3{font-size:19px;color:#2F5A0E}
 .rs-step p{margin-top:8px}
-.rs-guilt{margin-top:22px;padding:20px 22px;border-radius:18px;background:var(--bubble);border:2px solid var(--card-line)}
+.rs-after{padding:40px 0 56px}
+.rs-guilt{margin-top:0;padding:20px 22px;border-radius:18px;background:var(--bubble);border:2px solid var(--card-line)}
 .rs-guilt p{margin-top:8px}
 .rs-disclaimer{margin-top:20px;font-size:14px;color:var(--muted)}
 .rs-again{margin-top:14px;padding:8px 0;border:0;background:none;font:600 15px/1 var(--body);color:var(--sky-pressed);text-decoration:underline;cursor:pointer}
@@ -683,13 +684,6 @@ nav.links a[aria-current="true"]{color:var(--text)}
 
       <div class="rs-step" id="rsStep"></div>
 
-      <div class="rs-guilt">
-        <h3>Без провини</h3>
-        <p>Дослідниці з Лувенського університету Моїра Міколайчак і Ізабель Роскам описують батьківське вигорання як дисбаланс: коли того, що виснажує, роками більше, ніж того, що відновлює. П'ятнадцять хвилин на день не роблять тебе егоїсткою. Вони тримають цей баланс — а від нього залежить і те, якою ти приходиш увечері до дітей.</p>
-      </div>
-
-      <p class="rs-disclaimer">Це самоперевірка, а не діагноз. Шість потреб узято з моделі відновлення DRAMMA (Ньюман, Тей і Дінер, 2014), способи — з досліджень про короткі перерви й відпочинок. Якщо втома не минає тижнями й заважає жити, варто поговорити з лікарем або психологом.</p>
-      <button class="rs-again" type="button" id="rsAgain">Пройти ще раз</button>
     </div>
 
   </div>
@@ -711,6 +705,18 @@ nav.links a[aria-current="true"]{color:var(--text)}
       <img src="../assets/v2/img-d4ddcfcb.webp" alt="" width="636" height="900" loading="lazy">
       <img src="../assets/v2/img-a3620f83.webp" alt="" width="636" height="900" loading="lazy">
     </div>
+  </div>
+</section>
+
+<section class="rs rs-after" id="rsAfter" hidden>
+  <div class="wrap">
+      <div class="rs-guilt">
+        <h3>Без провини</h3>
+        <p>Дослідниці з Лувенського університету Моїра Міколайчак і Ізабель Роскам описують батьківське вигорання як дисбаланс: коли того, що виснажує, роками більше, ніж того, що відновлює. П'ятнадцять хвилин на день не роблять тебе егоїсткою. Вони тримають цей баланс — а від нього залежить і те, якою ти приходиш увечері до дітей.</p>
+      </div>
+
+      <p class="rs-disclaimer">Це самоперевірка, а не діагноз. Шість потреб узято з моделі відновлення DRAMMA (Ньюман, Тей і Дінер, 2014), способи — з досліджень про короткі перерви й відпочинок. Якщо втома не минає тижнями й заважає жити, варто поговорити з лікарем або психологом.</p>
+      <button class="rs-again" type="button" id="rsAgain">Пройти ще раз</button>
   </div>
 </section>
 </main>
@@ -991,6 +997,7 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
   function show(id) {
     ['rsStart', 'rsQuiz', 'rsResult'].forEach(function (s) { $(s).hidden = s !== id; });
     $('rsNext').hidden = id !== 'rsResult';
+    $('rsAfter').hidden = id !== 'rsResult';
     window.scrollTo({ top: $('rs').offsetTop - 80, behavior: 'smooth' });
   }
 
