@@ -106,9 +106,20 @@
 .rs-q{margin-top:8px;font:700 clamp(22px,4.4vw,30px)/1.25 var(--body);color:var(--text);outline:none;min-height:2.5em}
 .rs-answers{display:grid;gap:12px;margin-top:24px}
 .rs-answers button{display:block;width:100%;text-align:left;padding:16px 20px;border-radius:16px;border:2.5px solid var(--outline);background:var(--surface);box-shadow:3px 4px 0 var(--outline);font:600 18px/1.3 var(--body);color:var(--text);cursor:pointer;transition:transform .08s ease,box-shadow .08s ease,background .15s ease}
-.rs-answers button:hover{background:var(--bubble)}
+@media (hover:hover){.rs-answers button:hover{background:var(--bubble)}}
 .rs-answers button:active{transform:translate(2px,3px);box-shadow:1px 1px 0 var(--outline)}
-.rs-answers button[aria-pressed="true"]{background:var(--sun-light)}
+.rs-answers button{-webkit-tap-highlight-color:transparent;position:relative}
+.rs-answers button[aria-pressed="true"],.rs-answers button.picked{background:#EAF3DE;border-color:#3B6D11;box-shadow:3px 4px 0 #3B6D11;color:#2F5A0E}
+.rs-answers button.picked::after,.rs-answers button[aria-pressed="true"]::after{content:"";position:absolute;right:16px;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:#3B6D11 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.rs-answers.busy{pointer-events:none}
+.rs .rs-q:focus,.rs .rs-q:focus-visible,.rs h2[tabindex]:focus-visible{outline:none}
+.rs-in{animation:rsIn .32s ease both}
+.rs-in.rs-answers{animation-delay:.06s}
+@keyframes rsIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+.rs-count b{display:inline-block;color:var(--text)}
+.rs-count .bump{animation:rsBump .35s ease}
+@keyframes rsBump{50%{transform:scale(1.35);color:var(--sky-pressed)}}
+@media (prefers-reduced-motion:reduce){.rs-in,.rs-count .bump{animation:none}}
 .rs-back{margin-top:22px;padding:8px 0;border:0;background:none;font:600 15px/1 var(--body);color:var(--muted);cursor:pointer}
 .rs-back[disabled]{visibility:hidden}
 
@@ -1004,24 +1015,33 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
   function render() {
     var isHelp = step === ORDER.length;
     $('rsBar').style.width = Math.round(step / TOTAL * 100) + '%';
-    $('rsCount').textContent = (step + 1) + ' з ' + TOTAL;
+    $('rsCount').innerHTML = 'Питання <b class="bump">' + (step + 1) + '</b> з ' + TOTAL;
     $('rsHint').textContent = isHelp ? 'І останнє.' : 'Згадай останні 7 днів. Як часто так було?';
     $('rsQ').textContent = isHelp ? HELP_Q : NEEDS[ORDER[step][0]].q[ORDER[step][1]];
-    var box = $('rsAnswers'); box.innerHTML = '';
+    var box = $('rsAnswers'); box.innerHTML = ''; box.classList.remove('busy');
     (isHelp ? HELP : FREQ).forEach(function (txt, v) {
       var b = document.createElement('button');
       b.type = 'button'; b.textContent = txt;
       b.setAttribute('aria-pressed', answers[step] === v ? 'true' : 'false');
-      b.addEventListener('click', function () { pick(v); });
+      b.addEventListener('click', function () { pick(v, b); });
       box.appendChild(b);
     });
     $('rsBack').disabled = step === 0;
+    // новий вопрос помітно «в'їжджає», щоб було видно, що він змінився
+    ['rsHint', 'rsQ', 'rsAnswers'].forEach(function (id) { var el = $(id); el.classList.remove('rs-in'); void el.offsetWidth; el.classList.add('rs-in'); });
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     $('rsQ').focus({ preventScroll: true });
   }
 
-  function pick(v) {
+  function pick(v, btn) {
+    var box = $('rsAnswers');
+    if (box.classList.contains('busy')) return;
     answers[step] = v;
-    if (step < TOTAL - 1) { step++; render(); } else { result(); }
+    box.classList.add('busy');
+    [].forEach.call(box.children, function (x) { x.classList.remove('picked'); x.setAttribute('aria-pressed', 'false'); });
+    if (btn) btn.classList.add('picked');
+    // коротко показуємо вибір зеленим, потім — наступне питання
+    setTimeout(function () { if (step < TOTAL - 1) { step++; render(); } else { result(); } }, 280);
   }
 
   function level(score) {
