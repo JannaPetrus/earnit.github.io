@@ -151,15 +151,32 @@
 .rs-guilt p{margin-top:8px}
 .rs-disclaimer{margin-top:20px;font-size:14px;color:var(--muted)}
 .rs-again{margin-top:14px;padding:8px 0;border:0;background:none;font:600 15px/1 var(--body);color:var(--sky-pressed);text-decoration:underline;cursor:pointer}
-.rk-next .wrap{max-width:860px}
-.rk-next .b1{white-space:nowrap}
+/* міст до системи в результаті */
+.rs-bridge{margin-top:14px;padding-top:14px;border-top:1.5px dashed #E7C38C}
+.rs-bridge a{display:inline-block;margin-top:10px;font-weight:700;color:var(--sky-pressed)}
+
+/* нижній блок про систему */
+.rs-next .wrap{max-width:980px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:center}
+.rs-facts{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:8px;color:#FFF7E6}
+.rs-facts li{padding-left:30px;position:relative}
+.rs-facts li::before{content:"";position:absolute;left:0;top:3px;width:20px;height:20px;border-radius:50%;background:var(--sun) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%231D2B4F' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.rs-next .b1{margin-top:24px}
+.rs-fan{position:relative;height:330px}
+.rs-fan img{position:absolute;width:200px;height:auto;border-radius:10px;border:3px solid var(--outline);box-shadow:5px 7px 0 #0F1E3D}
+.rs-fan img:first-child{left:0;top:20px;transform:rotate(-6deg)}
+.rs-fan img:last-child{right:0;top:0;transform:rotate(5deg)}
+@media (max-width:760px){
+  .rs-next .wrap{grid-template-columns:minmax(0,1fr);gap:28px}
+  .rs-fan{height:250px;max-width:300px;margin:0 auto;width:100%}
+  .rs-fan img{width:150px}
+  .rs-next .b1{width:100%;justify-content:center}
+}
 
 @media (max-width:520px){
   .rs{padding:32px 0 48px}
   .rs-profile li{grid-template-columns:minmax(0,1fr) 112px;gap:6px 10px}
   .rs-profile li .bar{grid-column:1 / -1;grid-row:2}
   .rs-answers button{padding:15px 16px;font-size:17px}
-  .rk-next .b1{white-space:normal;width:100%;justify-content:center}
 }
 </style>
 </head>
@@ -678,13 +695,22 @@ nav.links a[aria-current="true"]{color:var(--text)}
   </div>
 </section>
 
-<section class="final rk-next" id="rsNext" hidden>
+<section class="final rs-next" id="rsNext" hidden>
   <div class="wrap">
-    <div>
+    <div class="rs-next-copy">
       <h2>Звідки в мами беруться ці 15 хвилин</h2>
-      <p>Найбільше маминого часу з'їдають нагадування: прибери, збери рюкзак, сідай за уроки. Ми зробили систему EarnIt, у якій дитина 7–10 років робить свої справи сама, бо їй є заради чого. Гайд для батьків і готові аркуші для друку.</p>
+      <p>Найбільше маминого часу з'їдають нагадування: прибери, збери рюкзак, сідай за уроки. Ми зробили систему EarnIt, у якій дитина 7–10 років робить свої справи сама, бо їй є заради чого.</p>
+      <ul class="rs-facts">
+        <li>Гайд для батьків і готові аркуші для друку</li>
+        <li>Запускаєте за один вечір</li>
+        <li>Від 399 ₴, файли одразу на пошту</li>
+      </ul>
+      <a class="b1" id="rsSystem" data-place="bottom" href="../?utm_source=resurs&amp;utm_medium=leadmagnet&amp;utm_campaign=resurs&amp;utm_content=bottom">Подивитись систему</a>
     </div>
-    <a class="b1" id="rsSystem" href="../?utm_source=resurs&amp;utm_medium=leadmagnet&amp;utm_campaign=resurs">Подивитись систему</a>
+    <div class="rs-fan" aria-hidden="true">
+      <img src="../assets/v2/img-d4ddcfcb.webp" alt="" width="636" height="900" loading="lazy">
+      <img src="../assets/v2/img-a3620f83.webp" alt="" width="636" height="900" loading="lazy">
+    </div>
   </div>
 </section>
 </main>
@@ -1006,7 +1032,15 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
     return '<details class="rs-more"><summary>' + (also ? 'Також бракує: ' : 'Бракує: ') + esc(n.label.toLowerCase()) + '</summary>' + body + '</details>';
   }
 
-  var UNLOAD = '<div class="rs-unload"><h3>Що зняти з себе</h3><p>Відпочинок не замінить допомоги. Якщо все тримається на тобі, десять хвилин не врятують — потрібно зменшити навантаження. Передай не одну задачу, а цілу ділянку: наприклад, вечірнє купання або збори рюкзака. І дай дітям частину їхніх справ — у 7–10 років вони вже можуть більше, ніж здається.</p></div>';
+  var BRIDGE_URL = '../?utm_source=resurs&amp;utm_medium=leadmagnet&amp;utm_campaign=resurs&amp;utm_content=bridge#how';
+  function unload(scenario) {
+    var lead = scenario === 'all' ? 'Коли бракує всього, перше, що варто зняти, — щоденні нагадування дітям. ' : '';
+    var bridge = scenario === 'ok' ? '' :
+      '<div class="rs-bridge"><p>' + lead + 'Ми вдома почали саме з цього: зробили систему, в якій син сам робить свої справи, бо йому є заради чого. А я перестала нагадувати.</p>' +
+      '<a href="' + BRIDGE_URL + '" data-place="bridge">Як це влаштовано →</a></div>';
+    return UNLOAD_HEAD + bridge + '</div>';
+  }
+  var UNLOAD_HEAD = '<div class="rs-unload"><h3>Що зняти з себе</h3><p>Відпочинок не замінить допомоги. Якщо все тримається на тобі, десять хвилин не врятують — потрібно зменшити навантаження. Передай не одну задачу, а цілу ділянку: наприклад, вечірнє купання або збори рюкзака. І дай дітям частину їхніх справ — у 7–10 років вони вже можуть більше, ніж здається.</p>';
 
   function result() {
     var scores = NEEDS.map(function (n, i) {
@@ -1051,8 +1085,8 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
     $('rsTitle').textContent = title;
     $('rsIntro').textContent = intro;
     $('rsCards').innerHTML = cards;
-    $('rsUnloadTop').innerHTML = unloadAny && unloadTop ? UNLOAD : '';
-    $('rsUnloadBottom').innerHTML = unloadAny && !unloadTop ? UNLOAD : '';
+    $('rsUnloadTop').innerHTML = unloadAny && unloadTop ? unload(scenario) : '';
+    $('rsUnloadBottom').innerHTML = unloadAny && !unloadTop ? unload(scenario) : '';
 
     var first = main.length ? main[0].n : null;
     $('rsStep').innerHTML = first
@@ -1072,7 +1106,10 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
   });
   $('rsBack').addEventListener('click', function () { if (step > 0) { step--; render(); } });
   $('rsAgain').addEventListener('click', function () { answers = []; step = 0; show('rsQuiz'); render(); });
-  $('rsSystem').addEventListener('click', function () { track('ResursToSystem', { magnet: 'resurs' }); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[data-place]');
+    if (a) track('ResursToSystem', { magnet: 'resurs', place: a.getAttribute('data-place') });
+  });
 })();
 </script>
 </body>
