@@ -151,6 +151,34 @@ body.modal-open .sticky-buy{transform:translateY(110%)}
 @media (prefers-reduced-motion:reduce){.sticky-buy{transition:none}}
 </style>
 <style>
+/* .bonus-card.fin-card: стилі дизайну йдуть у <body> пізніше за ці, тому
+   перебиваємо їх специфічністю, а не порядком */
+.bonus-card.fin-card{margin-top:24px;background:#EAF3DE;border-color:#6EA45A}
+.bonus-card.fin-card .ftag{color:#3B6D11}
+.bonus-card.fin-card .bonus-badge{background:#3B6D11;color:#fff}
+.bonus-card.fin-card .bic{background:#EAF3DE}
+.tier.tier-max{border:2px solid #4F3FD4;background:var(--surface);box-shadow:0 2px 4px rgba(29,43,79,.06),0 18px 40px rgba(29,43,79,.14)}
+.tier.tier-full{border:1.5px solid var(--card-line);background:var(--card);box-shadow:var(--soft2)}
+.money .demo .pt{letter-spacing:.02em}
+.bonus-card.fin-card .fan-page{box-shadow:0 2px 4px rgba(29,43,79,.08),0 12px 24px -8px rgba(59,109,17,.35)}
+.tlist li.fin span{font-weight:600}
+/* Головна з 20.11.2026: бонуси — компактна смуга під фінансовою грамотністю */
+.bonus-card.bonus-compact{margin-top:24px;padding:24px 28px 26px}
+.bonus-card.bonus-compact h3{font-size:20px;margin:6px 0 14px}
+.bonus-card.bonus-compact .bonus-body{display:block}
+.bonus-card.bonus-compact .fan{display:none}
+.bonus-card.bonus-compact .bgrid{gap:8px 16px}
+.bonus-card.bonus-compact .bitem{padding:10px 14px;align-items:center}
+.bonus-card.bonus-compact .bitem h4{font-size:15px;padding-top:0}
+.bonus-card.bonus-compact .bitem p{display:none}
+@media (max-width:760px){.bonus-card.bonus-compact{padding:52px 18px 18px}}
+.bonus-card.fin-card .bitem.wide{grid-column:1/-1}
+.tier-max .tlist li:nth-child(2){margin-top:6px;padding-top:12px;border-top:1px dashed var(--card-line)}
+.tier-max .tlist li:nth-child(7){margin-top:0;padding-top:0;border-top:0}
+.tiers.three{grid-template-columns:repeat(3,minmax(0,1fr));max-width:1180px}
+@media (max-width:1060px){.tiers.three{grid-template-columns:minmax(0,520px);justify-content:center;gap:30px}.tiers.three .tier-max{order:-2}.tiers.three .tier-full{order:-1}}
+</style>
+<style>
 /* Липка шапка накривала початок розділу при переході за посиланням */
 section[id]{scroll-margin-top:64px}
 .menu-btn,.mnav{display:none}
@@ -631,7 +659,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
     <nav class="links" aria-label="Розділи">
       <span class="nav-ind" aria-hidden="true"></span><a href="#how">Як працює</a><a href="#inside">Що всередині</a><a href="#fit">Кому підійде</a><a href="#reviews">Відгуки</a><a href="#faq">Питання</a>
     </nav>
-    <a class="b1 small" href="#price" data-tier="full">Купити</a>
+    <a class="b1 small" href="#price" data-tier="max">Купити</a>
     <button type="button" class="menu-btn" id="menuBtn" aria-label="Меню" aria-expanded="false" aria-controls="mnav"><svg class="bars" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
   </div>
   <nav class="mnav" id="mnav" aria-label="Розділи"><a href="#how">Як працює</a><a href="#inside">Що всередині</a><a href="#fit">Кому підійде</a><a href="#reviews">Відгуки</a><a href="#faq">Питання</a></nav>
@@ -642,14 +670,14 @@ nav.links a[aria-current="true"]{color:var(--text)}
   <div class="wrap">
     <div class="hero-copy">
       <span class="eyebrow">Система, яка будує характер</span>
-      <h1>Дитина сама виконує свої обов’язки</h1>
-            <p class="lead">EarnIt — проста система сімейної економіки, яка допоможе дитині побудувати внутрішню мотивацію виконувати свої обов’язки. Ви більше не нагадуєте по десять разів і не кричите.</p>
+      <h1>Обов’язки без постійних нагадувань. Уміння розпоряджатися грошима — на все життя.</h1>
+            <p class="lead">EarnIt — проста система сімейної економіки. Дитина заробляє монети за свої справи, а потім учиться ними розпоряджатися: відкладати на велику мрію, ділити дохід і планувати покупки. Ви перестаєте нагадувати по десять разів, а дитина дізнається, що гроші беруться не з картки, а з праці.</p>
       <div class="files toon-s">
         <svg width="40" height="46" viewBox="0 0 40 46" aria-hidden="true"><path d="M4 3h22l10 10v30H4z" fill="#FFF7E6" stroke="#1C2A3F" stroke-width="2.5" stroke-linejoin="round"/><path d="M26 3v10h10" fill="#F4E1B7" stroke="#1C2A3F" stroke-width="2.5" stroke-linejoin="round"/><rect x="9" y="24" width="22" height="9" rx="3" fill="#2988D3"/><text x="20" y="31.5" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="7.5" font-weight="700" fill="#fff">PDF</text></svg>
-        <span><b>Гайд для батьків</b> (є версія для телефону) і 15 аркушів для друку</span>
+        <span><b>Гайди для батьків</b> (є версії для телефону) і аркуші для друку: система мотивації та фінансова грамотність</span>
       </div>
       <div class="cta-row">
-        <a class="b1" href="#price" data-tier="full">Купити EarnIt · 499 грн</a>
+        <a class="b1" href="#price" data-tier="max">Купити EarnIt · 599 грн</a>
         <p class="refund">Якщо система не підійде — повернемо кошти протягом 14 днів</p>
       </div>
       <div class="chips">
@@ -729,42 +757,47 @@ nav.links a[aria-current="true"]{color:var(--text)}
   </div>
 </section>
 
-<section class="community" id="telegram">
-  <div class="wrap tg-grid">
-    <div class="tg-copy">
-      <span class="eyebrow">Підтримка</span>
-      <h2><span class="tg-badge" aria-hidden="true"><svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/></svg></span>Ви не залишитесь наодинці з PDF</h2>
-      <p class="lead">Після оплати разом із файлами ви отримаєте посилання в закриту Telegram-спільноту батьків EarnIt. Доступ назавжди.</p>
-      <p class="lead">Застрягли на третьому тижні? Дитина торгується за ціни? Не знаєте, скільки давати за нове завдання? Пишіть у коментарях — я відповідаю сама. А поруч батьки, які вже пройшли те саме, і їхні рішення часто найкорисніші.</p>
+<section class="how money" id="money">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Наступний крок</span>
+      <h2>Коли монети прижилися, дитина вчиться ними розпоряджатися</h2>
+      <p class="lead">Заробляти дитина вже вміє. Доповнення «Фінансова грамотність» учить наступного: спершу відкласти частину монет і тільки потім витрачати решту. Так накопичують дорослі, у яких це виходить, — а ті, хто відкладає із залишку, зазвичай не відкладають нічого.</p>
     </div>
-    <div class="tg-points">
-      <div class="sitem toon-s"><span class="ic" style="background:var(--sky-light)"><svg width="30" height="30" aria-hidden="true" style="color:#1C2A3F" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40A16,16,0,0,0,24,64V224a15.85,15.85,0,0,0,9.24,14.5A16.13,16.13,0,0,0,40,240a15.89,15.89,0,0,0,10.25-3.78l.09-.07L83,208H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM40,224h0ZM216,192H80a8,8,0,0,0-5.23,1.95L40,224V64H216ZM88,112a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H96A8,8,0,0,1,88,112Zm0,32a8,8,0,0,1,8-8h64a8,8,0,1,1,0,16H96A8,8,0,0,1,88,144Z"/></svg></span><div><h3>Відповіді на ваші питання від авторки</h3></div></div>
-      <div class="sitem toon-s"><span class="ic" style="background:var(--lavender)"><svg width="30" height="30" aria-hidden="true" style="color:#1C2A3F" viewBox="0 0 256 256" fill="currentColor"><path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"/></svg></span><div><h3>Досвід інших родин: що спрацювало, а що ні</h3></div></div>
-      <div class="sitem toon-s"><span class="ic" style="background:var(--leaf-light)"><svg width="30" height="30" aria-hidden="true" style="color:#1C2A3F" viewBox="0 0 256 256" fill="currentColor"><path d="M248,128a56,56,0,0,1-95.6,39.6l-.33-.35L92.12,99.55a40,40,0,1,0,0,56.9l8.52-9.62a8,8,0,1,1,12,10.61l-8.69,9.81-.33.35a56,56,0,1,1,0-79.2l.33.35,59.95,67.7a40,40,0,1,0,0-56.9l-8.52,9.62a8,8,0,1,1-12-10.61l8.69-9.81.33-.35A56,56,0,0,1,248,128Z"/></svg></span><div><h3>Доступ назавжди, у будь-якому пакеті</h3></div></div>
+    <div class="steps">
+      <div class="step toon">
+        <span class="num">1</span>
+        <h3>Скарбничка: навчитися чекати</h3>
+        <p>Дитина обирає велику ціль і щовечора відкладає на неї третину зароблених монет. Шкала на аркуші показує, скільки лишилося, тож чекати стає цікаво, а не нудно.</p>
+        <div class="demo"><span class="pt">●●●●●○○○○○</span><span class="pt" style="background:var(--sun)">пів шляху</span></div>
+      </div>
+      <div class="step toon">
+        <span class="num">2</span>
+        <h3>Три конверти: спершу поділити</h3>
+        <p>Увечері дохід розкладається на «Витрачати», «Накопичувати» й «Ділитися». Скільки відкласти, дитина знає наперед, а не дізнається з того, що випадково лишилося.</p>
+        <div class="demo"><span class="pt">Витрачати</span><span class="pt">Накопичувати</span><span class="pt">Ділитися</span></div>
+      </div>
+      <div class="step toon">
+        <span class="num">3</span>
+        <h3>Банк батьків: монети працюють</h3>
+        <p>Раз на тиждень ви нараховуєте відсоток на скарбничку. Дитина на власних монетах бачить, що чекати вигідніше, ніж витратити все одразу.</p>
+        <div class="demo"><span class="pt"><svg class="star"><use href="#coin"/></svg>100</span><span class="pt" style="background:var(--sun)">+10% → 110</span></div>
+      </div>
+    </div>
+    <div class="result toon-s">
+      <strong>Входить у пакет Максимальний</strong>
+      <span>А коли система тримається сама — перехід до справжніх кишенькових і перший заробіток під вашим наглядом, з правилами безпеки, які дорослий виконує обов’язково.</span>
     </div>
   </div>
 </section>
 
-<section class="school">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Школа</span>
-      <h2>Шкільний блок</h2>
-      <p class="lead">Ранкові збори, зібраний рюкзак і домашні завдання — те, де батьки витрачають найбільше сил. Шість аркушів і окремий розділ у гайді вчать дитину брати відповідальність на себе.</p>
-    </div>
-    <div class="grid">
-      <div class="sitem toon-s"><span class="ic" style="background:var(--sun-light)"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="4" fill="#FDBE3D" stroke="#1C2A3F" stroke-width="2"/><path d="M12 3v2.5M4.5 6.5l1.8 1.8M19.5 6.5l-1.8 1.8M3 20h18" stroke="#1C2A3F" stroke-width="2" stroke-linecap="round"/></svg></span><div><h3>Ранкові збори без нагадувань</h3><p>Аркуш на стіні: дитина сама відмічає все, що зробила зранку.</p></div></div>
-      <div class="sitem toon-s"><span class="ic" style="background:var(--sky-light)"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8a5 5 0 0 1 10 0v12H7z" fill="#2988D3" stroke="#1C2A3F" stroke-width="2" stroke-linejoin="round"/><path d="M10 6V4h4v2M9 13h6v4H9z" fill="#FFF7E6" stroke="#1C2A3F" stroke-width="2" stroke-linejoin="round"/></svg></span><div><h3>Рюкзак з вечора</h3><p>Списки зборів і таблиця позначок на цілий місяць.</p></div></div>
-      <div class="sitem toon-s"><span class="ic" style="background:var(--leaf-light)"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" fill="#fff" stroke="#1C2A3F" stroke-width="2"/><path d="M8 9l1.5 1.5L12 8M8 15l1.5 1.5L12 14M14 9.5h2.5M14 15.5h2.5" fill="none" stroke="#1C2A3F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Трекер домашніх завдань</h3><p>Видно, де дитина впоралася сама, а де предмет буксує.</p></div></div>
-      <div class="sitem toon-s"><span class="ic" style="background:var(--lavender)"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="#fff" stroke="#1C2A3F" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="#1C2A3F" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><h3>Режим дня і цілі на місяць</h3><p>Екранний час — за монети, а не через щоденні переговори.</p></div></div>
-    </div>
-    <p class="school-note"><span class="sn-ic"><svg width="24" height="24" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M232,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64ZM160,88h40a8,8,0,0,1,0,16H160a8,8,0,0,1,0-16Zm48,40a8,8,0,0,1-8,8H160a8,8,0,0,1,0-16h40A8,8,0,0,1,208,128Zm0,32a8,8,0,0,1-8,8H160a8,8,0,0,1,0-16h40A8,8,0,0,1,208,160Z"/></svg></span><span>У гайді — план <b>«П’ять кроків до самостійних уроків»</b>: як поступово навчити дитину робити уроки самостійно — замість того щоб годинами сидіти над ними разом.</span></p>
-  </div>
-</section>
+
+
+
 
 <section class="inside2" id="inside">
   <div class="wrap">
-    <div class="sec-head center"><h2>Що всередині</h2><p class="lead">Гайд для батьків і матеріали для друку. Погортайте сторінки.</p></div>
+    <div class="sec-head center"><h2>Що всередині</h2><p class="lead">Гайд, матеріали для друку і фінансова грамотність. Погортайте сторінки.</p></div>
     <div class="pv-grid">
     <div class="pv-part">
       <span class="ftag">PDF-гайд · 20 сторінок + версія для телефону</span>
@@ -795,8 +828,14 @@ nav.links a[aria-current="true"]{color:var(--text)}
       </div>
     </div>
     </div>
-    <article class="bonus-card">
-      <span class="bonus-badge">Тільки в пакеті Повний</span>
+    <article class="bonus-card fin-card">
+      <span class="bonus-badge">Тільки в пакеті Максимальний</span>
+      <span class="ftag">Доповнення · 20 сторінок + 7 аркушів</span>
+      <h3>Фінансова грамотність: як навчити дитину відкладати, планувати й розумно витрачати</h3>
+      <div class="bonus-body"><div class="fan" aria-hidden="true"><span class="fan-page f0"><img src="assets/v2/finance-preview-840385f9.webp" alt="" loading="lazy" width="200" height="283"></span><span class="fan-page f1"><img src="assets/v2/finance-preview-9bccb0c2.webp" alt="" loading="lazy" width="200" height="283"></span><span class="fan-page f2"><img src="assets/v2/finance-preview-4ad78ec0.webp" alt="" loading="lazy" width="200" height="283"></span><span class="fan-page f3"><img src="assets/v2/finance-preview-d47b71a9.webp" alt="" loading="lazy" width="200" height="283"></span></div><div class="bgrid"><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Скарбничка й запас: навчитися чекати</h4><p>Велика ціль на шкалі, яку видно щодня, і окремі монети на непередбачене — щоб ціль ніколи не чіпати.</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Три конверти: спершу поділити, потім витрачати</h4><p>Щовечора дохід ділиться на «Витрачати», «Накопичувати» й «Ділитися». Накопичення стає рішенням, а не залишком.</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Банк батьків: монети можуть працювати</h4><p>Раз на тиждень відсоток на скарбничку. Дитина на власних монетах бачить, що чекати вигідніше, ніж витратити одразу.</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Реальні гроші й перший заробіток</h4><p>Коли переходити до кишенькових, перший продаж під вашим наглядом і правила безпеки, які дорослий робить обов'язково.</p></div></div><div class="bitem wide"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Книжки й настільні ігри про гроші</h4><p>Що почитати вам і що читати разом з дитиною, а також ігри, де результат залежить від рішень, а не від кубика. І чому Монополія сюди не підходить.</p></div></div></div></div>
+    </article>
+    <article class="bonus-card bonus-compact">
+      <span class="bonus-badge">У пакетах Повний і Максимальний</span>
       <span class="ftag">Бонуси · 8 сторінок</span>
       <h3>4 бонуси для складних моментів</h3>
       <div class="bonus-body">
@@ -810,6 +849,39 @@ nav.links a[aria-current="true"]{color:var(--text)}
   <button type="button" class="zoom-close" id="zoomClose" aria-label="Закрити"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
   <img id="zoomImg" alt="">
 </div>
+
+<section class="school">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Школа</span>
+      <h2>Шкільний блок</h2>
+      <p class="lead">Ранкові збори, зібраний рюкзак і домашні завдання — те, де батьки витрачають найбільше сил. Шість аркушів і окремий розділ у гайді вчать дитину брати відповідальність на себе.</p>
+    </div>
+    <div class="grid">
+      <div class="sitem toon-s"><span class="ic" style="background:var(--sun-light)"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="4" fill="#FDBE3D" stroke="#1C2A3F" stroke-width="2"/><path d="M12 3v2.5M4.5 6.5l1.8 1.8M19.5 6.5l-1.8 1.8M3 20h18" stroke="#1C2A3F" stroke-width="2" stroke-linecap="round"/></svg></span><div><h3>Ранкові збори без нагадувань</h3><p>Аркуш на стіні: дитина сама відмічає все, що зробила зранку.</p></div></div>
+      <div class="sitem toon-s"><span class="ic" style="background:var(--sky-light)"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8a5 5 0 0 1 10 0v12H7z" fill="#2988D3" stroke="#1C2A3F" stroke-width="2" stroke-linejoin="round"/><path d="M10 6V4h4v2M9 13h6v4H9z" fill="#FFF7E6" stroke="#1C2A3F" stroke-width="2" stroke-linejoin="round"/></svg></span><div><h3>Рюкзак з вечора</h3><p>Списки зборів і таблиця позначок на цілий місяць.</p></div></div>
+      <div class="sitem toon-s"><span class="ic" style="background:var(--leaf-light)"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" fill="#fff" stroke="#1C2A3F" stroke-width="2"/><path d="M8 9l1.5 1.5L12 8M8 15l1.5 1.5L12 14M14 9.5h2.5M14 15.5h2.5" fill="none" stroke="#1C2A3F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Трекер домашніх завдань</h3><p>Видно, де дитина впоралася сама, а де предмет буксує.</p></div></div>
+      <div class="sitem toon-s"><span class="ic" style="background:var(--lavender)"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="#fff" stroke="#1C2A3F" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="#1C2A3F" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><h3>Режим дня і цілі на місяць</h3><p>Екранний час — за монети, а не через щоденні переговори.</p></div></div>
+    </div>
+    <p class="school-note"><span class="sn-ic"><svg width="24" height="24" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M232,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64ZM160,88h40a8,8,0,0,1,0,16H160a8,8,0,0,1,0-16Zm48,40a8,8,0,0,1-8,8H160a8,8,0,0,1,0-16h40A8,8,0,0,1,208,128Zm0,32a8,8,0,0,1-8,8H160a8,8,0,0,1,0-16h40A8,8,0,0,1,208,160Z"/></svg></span><span>У гайді — план <b>«П’ять кроків до самостійних уроків»</b>: як поступово навчити дитину робити уроки самостійно — замість того щоб годинами сидіти над ними разом.</span></p>
+  </div>
+</section>
+
+<section class="community" id="telegram">
+  <div class="wrap tg-grid">
+    <div class="tg-copy">
+      <span class="eyebrow">Підтримка</span>
+      <h2><span class="tg-badge" aria-hidden="true"><svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/></svg></span>Ви не залишитесь наодинці з PDF</h2>
+      <p class="lead">Після оплати разом із файлами ви отримаєте посилання в закриту Telegram-спільноту батьків EarnIt. Доступ назавжди.</p>
+      <p class="lead">Застрягли на третьому тижні? Дитина торгується за ціни? Не знаєте, скільки давати за нове завдання? Пишіть у коментарях — я відповідаю сама. А поруч батьки, які вже пройшли те саме, і їхні рішення часто найкорисніші.</p>
+    </div>
+    <div class="tg-points">
+      <div class="sitem toon-s"><span class="ic" style="background:var(--sky-light)"><svg width="30" height="30" aria-hidden="true" style="color:#1C2A3F" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40A16,16,0,0,0,24,64V224a15.85,15.85,0,0,0,9.24,14.5A16.13,16.13,0,0,0,40,240a15.89,15.89,0,0,0,10.25-3.78l.09-.07L83,208H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM40,224h0ZM216,192H80a8,8,0,0,0-5.23,1.95L40,224V64H216ZM88,112a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H96A8,8,0,0,1,88,112Zm0,32a8,8,0,0,1,8-8h64a8,8,0,1,1,0,16H96A8,8,0,0,1,88,144Z"/></svg></span><div><h3>Відповіді на ваші питання від авторки</h3></div></div>
+      <div class="sitem toon-s"><span class="ic" style="background:var(--lavender)"><svg width="30" height="30" aria-hidden="true" style="color:#1C2A3F" viewBox="0 0 256 256" fill="currentColor"><path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"/></svg></span><div><h3>Досвід інших родин: що спрацювало, а що ні</h3></div></div>
+      <div class="sitem toon-s"><span class="ic" style="background:var(--leaf-light)"><svg width="30" height="30" aria-hidden="true" style="color:#1C2A3F" viewBox="0 0 256 256" fill="currentColor"><path d="M248,128a56,56,0,0,1-95.6,39.6l-.33-.35L92.12,99.55a40,40,0,1,0,0,56.9l8.52-9.62a8,8,0,1,1,12,10.61l-8.69,9.81-.33.35a56,56,0,1,1,0-79.2l.33.35,59.95,67.7a40,40,0,1,0,0-56.9l-8.52,9.62a8,8,0,1,1-12-10.61l8.69-9.81.33-.35A56,56,0,0,1,248,128Z"/></svg></span><div><h3>Доступ назавжди, у будь-якому пакеті</h3></div></div>
+    </div>
+  </div>
+</section>
 
 <section class="fit" id="fit">
   <div class="wrap">
@@ -864,8 +936,8 @@ nav.links a[aria-current="true"]{color:var(--text)}
 
 <section class="price" id="price">
   <div class="wrap">
-    <div class="sec-head center"><h2>Одна оплата — і система ваша назавжди</h2><p class="lead">Оберіть пакет. Обидва — разовий платіж, файли приходять на пошту одразу після оплати.</p></div>
-    <div class="tiers">
+    <div class="sec-head center"><h2>Одна оплата — і система ваша назавжди</h2><p class="lead">Оберіть пакет. Усі три — разовий платіж, файли приходять на пошту одразу після оплати.</p></div>
+    <div class="tiers three">
         <article class="tier tier-base">
           <h3>Базовий</h3>
           <p class="tier-sub">PDF-гайд + версія для телефону · 15 аркушів для друку · Telegram-спільнота</p>
@@ -874,12 +946,20 @@ nav.links a[aria-current="true"]{color:var(--text)}
           <a class="b1 wide ghost" href="#price" data-tier="base">Обрати Базовий</a>
         </article>
         <article class="tier tier-full">
-          <span class="tier-badge">Обирають найчастіше</span>
+          
           <h3>Повний</h3>
           <p class="tier-sub">Усе з базового + 4 PDF-бонуси для складних моментів</p>
           <div class="tier-price">499 <small>грн</small></div>
           <ul class="tlist"><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Гайд для батьків, 20 сторінок + мобільна версія</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Покроковий план запуску системи за один вечір</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>15 аркушів для друку, поля можна редагувати</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Шкільний блок: ранкові збори, уроки, режим дня</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Ігрові банкноти й монети для вирізання</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Telegram-спільнота, доступ назавжди</span></li><li class="gift"><svg width="20" height="20" aria-hidden="true"><use href="#ph-gift"/></svg><span>Готовий текст першої розмови з дитиною</span></li><li class="gift"><svg width="20" height="20" aria-hidden="true"><use href="#ph-gift"/></svg><span>Якщо дитина проти: план у три кроки</span></li><li class="gift"><svg width="20" height="20" aria-hidden="true"><use href="#ph-gift"/></svg><span>Тато чи бабуся проти? Як домовитися, щоб ніхто не зламав систему</span></li><li class="gift"><svg width="20" height="20" aria-hidden="true"><use href="#ph-gift"/></svg><span>Щоб дитині не набридло: чек-лист із 7 питань раз на місяць</span></li></ul>
-          <a class="b1 wide" href="#price" data-tier="full">Обрати Повний</a>
+          <a class="b1 wide ghost" href="#price" data-tier="full">Обрати Повний</a>
+        </article>
+        <article class="tier tier-max">
+          <span class="tier-badge">Найвигідніше</span>
+          <h3>Максимальний</h3>
+          <p class="tier-sub">Усе з Повного + Фінансова грамотність: окремо вона коштує 200 грн, тут — на 100 грн дешевше</p>
+          <div class="tier-price">599 <small>грн</small></div>
+          <ul class="tlist"><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Усе, що в Повному: гайд, 15 аркушів, 4 бонуси, Telegram-спільнота</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>Фінансова грамотність: гайд, 20 сторінок</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>7 аркушів: скарбничка, конверти, план покупки, Банк батьків</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>Перехід до реальних грошей і перший заробіток</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>Безпека: що робить дорослий, коли дитина продає</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>Книжки для вас і дитини, настільні ігри про гроші</span></li></ul>
+          <a class="b1 wide" href="#price" data-tier="max">Обрати Максимальний</a>
         </article>
     </div>
     <div class="tier-foot">
@@ -892,7 +972,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
 <section class="faq" id="faq">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Питання</span><h2>Часті запитання</h2></div>
-    <div class="list"><div class="fcol"><details><summary>Що саме я отримую після оплати?</summary><p>Обидва пакети: гайд для батьків із покроковим планом запуску (PDF і мобільна версія для телефону), 15 аркушів для друку з полями, які можна редагувати, і доступ до Telegram-спільноти назавжди. У пакеті Повний — ще чотири бонуси. Усе приходить на пошту одразу після оплати.</p></details><details><summary>Чим відрізняються пакети?</summary><p>Система однакова в обох: гайд для батьків із мобільною версією, 15 аркушів для друку й доступ до Telegram-спільноти. У пакеті Повний є ще чотири бонуси для складних моментів: готовий текст першої розмови з дитиною, план на випадок, якщо дитина проти, як домовитися з татом і бабусею і щомісячна перевірка, щоб дитині не набридло. Якщо хочете почати без підготовки «що сказати» — беріть Повний. Якщо візьмете «Базовий», а згодом зрозумієте, що бонуси потрібні, — їх можна докупити окремо за 150 грн.</p></details><details><summary>Як потрапити в Telegram-спільноту?</summary><p>Посилання прийде в листі разом із файлами і буде на сторінці після оплати. Натисніть його — і ви одразу в спільноті.</p></details><details><summary>Чи можна адаптувати систему під свою сім’ю?</summary><p>Так. Збережіть матеріали для друку на комп’ютер і відкрийте в програмі для PDF, наприклад у безкоштовному Adobe Acrobat Reader: усі основні поля можна редагувати — вписати свої завдання, винагороди й кількість монет, щоб система підходила саме вашій родині. Рекомендації, що і як додавати, є в гайді.</p></details></div><div class="fcol"><details><summary>Чи не вб’ють нагороди бажання робити щось просто так?</summary><p>Ні, якщо платити за правильне. Базове дитина отримує завжди, без умов: їжу, увагу, ваш час. Монети — тільки за додаткові зусилля, а поведінка ціни не має взагалі. У гайді окремо розібрано, за що платити не можна і чому.</p></details><details><summary>Чи підійде система, якщо в мене кілька дітей?</summary><p>Так. Для кожної дитини друкуєте окремий трекер, а завдання й винагороди підбираєте під її вік. Діти бачать прогрес одне одного і часто починають заробляти монети разом.</p></details><details><summary>Мені потрібен принтер?</summary><p>Вистачить домашнього принтера, бажано кольорового. Можна також роздрукувати в копіцентрі.</p></details><details><summary>Чи можна повернути кошти?</summary><p>Якщо виникла технічна проблема — напишіть нам, допоможемо. Якщо система не підійде, повернемо кошти протягом 14 днів.</p></details></div></div>
+    <div class="list"><div class="fcol"><details><summary>Що саме я отримую після оплати?</summary><p>Усі пакети: гайд для батьків із покроковим планом запуску (PDF і версія для телефону), 15 аркушів для друку з полями, які можна редагувати, і доступ до Telegram-спільноти назавжди. У Повному — ще чотири бонуси для складних моментів. У Максимальному — усе з Повного і доповнення «Фінансова грамотність»: гайд і 7 аркушів для друку. Усе приходить на пошту одразу після оплати.</p></details><details><summary>Чим відрізняються пакети?</summary><p>Система однакова в усіх трьох: гайд, 15 аркушів і Telegram-спільнота. Повний додає чотири бонуси: готовий текст першої розмови з дитиною, план на випадок, якщо дитина проти, як домовитися з татом і бабусею, і щомісячну перевірку. Максимальний додає ще й фінансову грамотність — наступний крок, коли дитина вже звикла заробляти монети. Окремо вона коштує 200 грн, у Максимальному виходить на 100 грн дешевше. Бонуси й фінансову грамотність можна докупити й пізніше на сторінці доповнень.</p></details><details><summary>Як потрапити в Telegram-спільноту?</summary><p>Посилання прийде в листі разом із файлами і буде на сторінці після оплати. Натисніть його — і ви одразу в спільноті.</p></details><details><summary>Чи можна адаптувати систему під свою сім’ю?</summary><p>Так. Збережіть матеріали для друку на комп’ютер і відкрийте в програмі для PDF, наприклад у безкоштовному Adobe Acrobat Reader: усі основні поля можна редагувати — вписати свої завдання, винагороди й кількість монет, щоб система підходила саме вашій родині. Рекомендації, що і як додавати, є в гайді.</p></details></div><div class="fcol"><details><summary>Чи не вб’ють нагороди бажання робити щось просто так?</summary><p>Ні, якщо платити за правильне. Базове дитина отримує завжди, без умов: їжу, увагу, ваш час. Монети — тільки за додаткові зусилля, а поведінка ціни не має взагалі. У гайді окремо розібрано, за що платити не можна і чому.</p></details><details><summary>Чи не привчить це дитину робити все тільки за гроші?</summary><p>Монети в EarnIt умовні: їх міняють тільки на нагороди з вашого магазину, реальних грошей у системі немає. Базові речі дитина отримує завжди й без умов, а поведінка ціни не має взагалі. Фінансова грамотність додає протилежне до «все за гроші»: дитина вчиться відкладати, ділитися і розуміти, звідки беруться гроші в сім’ї.</p></details><details><summary>Можна почати одразу з фінансової грамотності?</summary><p>Вона спирається на систему монет: скарбничка, конверти й Банк батьків працюють із монетами, які дитина вже заробляє. Тому спершу запускаєте систему, а фінансову грамотність додаєте, коли побачите, що дитина звикла й сама береться за завдання. У Максимальному обидві частини приходять разом, тож наступний крок уже буде під рукою.</p></details><details><summary>Коли переходити до справжніх грошей?</summary><p>Коли дитина хоча б раз доведе скарбничку до кінця, а система працюватиме без ваших нагадувань. Як саме переходити — фіксовані й зароблені кишенькові, перший продаж і безпека — розписано в гайді фінансової грамотності.</p></details><details><summary>Чи підійде система, якщо в мене кілька дітей?</summary><p>Так. Для кожної дитини друкуєте окремий трекер, а завдання й винагороди підбираєте під її вік. Діти бачать прогрес одне одного і часто починають заробляти монети разом.</p></details><details><summary>Мені потрібен принтер?</summary><p>Вистачить домашнього принтера, бажано кольорового. Можна також роздрукувати в копіцентрі.</p></details><details><summary>Чи можна повернути кошти?</summary><p>Якщо виникла технічна проблема — напишіть нам, допоможемо. Якщо система не підійде, повернемо кошти протягом 14 днів.</p></details></div></div>
   </div>
 </section>
 
@@ -902,7 +982,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
       <h2>Запустіть систему вже сьогодні ввечері</h2>
       <p>Один вечір на налаштування, тиждень на звикання — і без щоденних нагадувань та криків.</p>
     </div>
-    <a class="b1" href="#price" data-tier="full">Купити EarnIt · 499 грн</a>
+    <a class="b1" href="#price" data-tier="max">Купити EarnIt · 599 грн</a>
   </div>
 </section>
 </main>
@@ -1209,18 +1289,22 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
   var TIERS = {
     base: { name: 'Базовий', price: 399 },
     full: { name: 'Повний', price: 499 },
+    max: { name: 'Максимальний', price: 599 },
     bonuses: { name: 'Бонуси', price: 150 },
+    finance: { name: 'Фінансова грамотність', price: 200 },
   };
-  var currentTier = 'full';
+  var currentTier = 'max';
 
   document.addEventListener('DOMContentLoaded', function () {
     var back = document.getElementById('buyModal'), card = document.getElementById('buyCard');
     var form = document.getElementById('buyForm'), lastFocus = null;
     // Перемикач Повний ⇄ Базовий у самій формі. Кнопки «Купити» відкривають
     // форму одразу з Повним, а хто хоче дешевше — перемикається тут, не
-    // повертаючись до блоку цін. Для «Бонусів» (/dodatky) перемикача немає.
+    // повертаючись до блоку цін. Максимальний можна зменшити до Повного.
+    // Для докупок (/dodatky) перемикача немає.
     var alt = document.getElementById('buyAlt');
     var ALT = {
+      max: ['Без фінансової грамотності — ', 'full', 'Повний за ' + TIERS.full.price + ' ₴'],
       full: ['Без бонусів — ', 'base', 'Базовий за ' + TIERS.base.price + ' ₴'],
       base: ['З 4 бонусами — ', 'full', 'Повний за ' + TIERS.full.price + ' ₴'],
     };
@@ -1243,7 +1327,7 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
     function openM(e) {
       e.preventDefault(); lastFocus = document.activeElement;
       var t = e.currentTarget && e.currentTarget.getAttribute('data-tier');
-      setTier(TIERS[t] ? t : 'full');
+      setTier(TIERS[t] ? t : 'max');
       var tier = TIERS[currentTier];
       back.classList.add('on');
       document.body.style.overflow = 'hidden';
@@ -1441,7 +1525,7 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
   });
 </script>
 <div class="sticky-buy" id="stickyBuy">
-  <a class="b1 wide" href="#price" data-tier="full">Купити EarnIt · 499&nbsp;₴</a>
+  <a class="b1 wide" href="#price" data-tier="max">Купити EarnIt · 599&nbsp;₴</a>
 </div>
 <script>
 (function () {

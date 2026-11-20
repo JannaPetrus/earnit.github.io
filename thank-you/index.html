@@ -94,7 +94,7 @@
         transaction_id: order.ref,
         value: order.value || 499,
         currency: order.currency || 'UAH',
-        items: [{ item_id: 'earnit-' + (order.tier || 'base'), item_name: 'EarnIt — ' + ({ full: 'Повний', bonuses: 'Бонуси' }[order.tier] || 'Базовий'), price: order.value || 499, quantity: 1 }],
+        items: [{ item_id: 'earnit-' + (order.tier || 'base'), item_name: 'EarnIt — ' + ({ full: 'Повний', max: 'Максимальний', bonuses: 'Бонуси', finance: 'Фінансова грамотність' }[order.tier] || 'Базовий'), price: order.value || 499, quantity: 1 }],
       });
     }
   })();
@@ -230,8 +230,8 @@
     </p>
 
     <p class="note" id="dodatkyNote" hidden>
-      <strong>Бонуси можна докупити.</strong> Готовий текст першої розмови з дитиною, план на випадок,
-      якщо дитина проти, і як домовитися з татом і бабусею — 150 грн на
+      <strong>Можна докупити.</strong> Бонуси для складних моментів — 150 грн, і «Фінансова грамотність»:
+      як навчити дитину відкладати, планувати й розумно витрачати — 200 грн. Усе на
       <a href="/dodatky/">earnit.com.ua/dodatky</a>.
     </p>
 
@@ -255,6 +255,10 @@
     if (!order) return;
     if (order.tier === 'bonuses') {
       document.getElementById('whatFlies').innerHTML = 'Чотири <b>бонуси EarnIt</b> уже летять на вашу пошту — разом із версією для телефону.';
+    } else if (order.tier === 'finance') {
+      document.getElementById('whatFlies').innerHTML = 'Доповнення <b>«Фінансова грамотність»</b> уже летить на вашу пошту — гайд і аркуші для друку.';
+    } else if (order.tier === 'max') {
+      document.getElementById('whatFlies').innerHTML = 'Комплект EarnIt уже летить на вашу пошту — <b>гайд з бонусами</b>, <b>матеріали для друку</b> і <b>«Фінансова грамотність»</b>.';
     } else if (order.tier === 'base') {
       document.getElementById('dodatkyNote').hidden = false;
     }

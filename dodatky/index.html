@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Доповнення — EarnIt</title>
-<meta name="description" content="Бонуси до пакета Базовий: перша розмова з дитиною, якщо дитина проти, якщо інші дорослі проти, щомісячна перевірка. 150 грн.">
+<meta name="description" content="Доповнення до EarnIt: бонуси для складних моментів (150 грн) і фінансова грамотність — як навчити дитину відкладати, планувати й розумно витрачати (200 грн).">
 <link rel="canonical" href="https://earnit.com.ua/dodatky/">
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
@@ -135,7 +135,38 @@ body.modal-open .sticky-buy{transform:translateY(110%)}
 @media (prefers-reduced-motion:reduce){.sticky-buy{transition:none}}
 </style>
 <style>
-.tiers.one{grid-template-columns:minmax(0,480px);justify-content:center}
+/* .bonus-card.fin-card: стилі дизайну йдуть у <body> пізніше за ці, тому
+   перебиваємо їх специфічністю, а не порядком */
+.bonus-card.fin-card{margin-top:24px;background:#EAF3DE;border-color:#6EA45A}
+.bonus-card.fin-card .ftag{color:#3B6D11}
+.bonus-card.fin-card .bonus-badge{background:#3B6D11;color:#fff}
+.bonus-card.fin-card .bic{background:#EAF3DE}
+.tier.tier-max{border:2px solid #4F3FD4;background:var(--surface);box-shadow:0 2px 4px rgba(29,43,79,.06),0 18px 40px rgba(29,43,79,.14)}
+.tier.tier-full{border:1.5px solid var(--card-line);background:var(--card);box-shadow:var(--soft2)}
+.money .demo .pt{letter-spacing:.02em}
+.bonus-card.fin-card .fan-page{box-shadow:0 2px 4px rgba(29,43,79,.08),0 12px 24px -8px rgba(59,109,17,.35)}
+.tlist li.fin span{font-weight:600}
+/* Головна з 20.11.2026: бонуси — компактна смуга під фінансовою грамотністю */
+.bonus-card.bonus-compact{margin-top:24px;padding:24px 28px 26px}
+.bonus-card.bonus-compact h3{font-size:20px;margin:6px 0 14px}
+.bonus-card.bonus-compact .bonus-body{display:block}
+.bonus-card.bonus-compact .fan{display:none}
+.bonus-card.bonus-compact .bgrid{gap:8px 16px}
+.bonus-card.bonus-compact .bitem{padding:10px 14px;align-items:center}
+.bonus-card.bonus-compact .bitem h4{font-size:15px;padding-top:0}
+.bonus-card.bonus-compact .bitem p{display:none}
+@media (max-width:760px){.bonus-card.bonus-compact{padding:52px 18px 18px}}
+.bonus-card.fin-card .bitem.wide{grid-column:1/-1}
+.tier-max .tlist li:nth-child(2){margin-top:6px;padding-top:12px;border-top:1px dashed var(--card-line)}
+.tier-max .tlist li:nth-child(7){margin-top:0;padding-top:0;border-top:0}
+.tiers.three{grid-template-columns:repeat(3,minmax(0,1fr));max-width:1180px}
+@media (max-width:1060px){.tiers.three{grid-template-columns:minmax(0,520px);justify-content:center;gap:30px}.tiers.three .tier-max{order:-2}.tiers.three .tier-full{order:-1}}
+</style>
+<style>
+.tiers.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:920px}
+@media (max-width:760px){.tiers.two{grid-template-columns:minmax(0,1fr)}}
+.tier.tier-fin{border:2px solid #6EA45A;background:var(--surface)}
+.tier-fin .tlist li:nth-child(7){margin-top:0;padding-top:0;border-top:0}
 .inside2 h2{text-wrap:balance}
 .faq a{color:var(--sky-pressed);text-decoration:underline}
 </style>
@@ -609,7 +640,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
 <main id="top">
 <section class="inside2" id="inside">
   <div class="wrap">
-    <div class="sec-head center"><span class="eyebrow">Доповнення до пакета Базовий</span><h2>Бонуси для складних моментів</h2><p class="lead">Система у вас уже є. Бонуси — для тих вечорів, коли щось іде не за планом: дитина каже «мені нічого не треба», а бабуся купує «просто так». 150&nbsp;грн — і Базовий стає Повним.</p></div>
+    <div class="sec-head center"><span class="eyebrow">Для тих, у кого вже є EarnIt</span><h2>Доповнення до вашої системи</h2><p class="lead">Система у вас уже є. Бонуси — для тих вечорів, коли щось іде не за планом. Фінансова грамотність — наступний крок, коли монети прижилися: дитина вчиться не тільки заробляти, а й відкладати та планувати.</p></div>
     <article class="bonus-card">
       <span class="bonus-badge">150 грн</span>
       <span class="ftag">Бонуси · 8 сторінок</span>
@@ -619,17 +650,30 @@ nav.links a[aria-current="true"]{color:var(--text)}
         <div class="bgrid"><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#ph-gift"/></svg></span><div><h4>Перша розмова з дитиною: готовий текст і план першого тижня</h4><p>Що казати і чого не казати, як почати з нагород, а не з обов’язків, і як відрізнити нормальний опір від сигналу.</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#ph-gift"/></svg></span><div><h4>Якщо дитина проти: план у три кроки</h4><p>Від «мені нічого не треба» до сліз і «мультики раніше були безкоштовно».</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#ph-gift"/></svg></span><div><h4>Тато чи бабуся проти? Як домовитися, щоб ніхто не зламав систему</h4><p>Що сказати іншим дорослим, щоб вони не купували «просто так» і не скасовували ваші правила. Готові тексти, які можна просто переслати.</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#ph-gift"/></svg></span><div><h4>Щоб дитині не набридло: чек-лист із 7 питань раз на місяць</h4><p>Сім питань: які завдання вже стали звичкою, які нагороди перестали цікавити і що оновити, щоб інтерес не згас на третьому тижні.</p></div></div></div>
       </div>
     </article>
+    <article class="bonus-card fin-card">
+      <span class="bonus-badge">200 грн</span>
+      <span class="ftag">Доповнення · 20 сторінок + 7 аркушів</span>
+      <h3>Фінансова грамотність: як навчити дитину відкладати, планувати й розумно витрачати</h3>
+      <div class="bonus-body"><div class="fan" aria-hidden="true"><span class="fan-page f0"><img src="../assets/v2/finance-preview-840385f9.webp" alt="" loading="lazy" width="200" height="283"></span><span class="fan-page f1"><img src="../assets/v2/finance-preview-9bccb0c2.webp" alt="" loading="lazy" width="200" height="283"></span><span class="fan-page f2"><img src="../assets/v2/finance-preview-4ad78ec0.webp" alt="" loading="lazy" width="200" height="283"></span><span class="fan-page f3"><img src="../assets/v2/finance-preview-d47b71a9.webp" alt="" loading="lazy" width="200" height="283"></span></div><div class="bgrid"><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Скарбничка й запас: навчитися чекати</h4><p>Велика ціль на шкалі, яку видно щодня, і окремі монети на непередбачене — щоб ціль ніколи не чіпати.</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Три конверти: спершу поділити, потім витрачати</h4><p>Щовечора дохід ділиться на «Витрачати», «Накопичувати» й «Ділитися». Накопичення стає рішенням, а не залишком.</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Банк батьків: монети можуть працювати</h4><p>Раз на тиждень відсоток на скарбничку. Дитина на власних монетах бачить, що чекати вигідніше, ніж витратити одразу.</p></div></div><div class="bitem"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Реальні гроші й перший заробіток</h4><p>Коли переходити до кишенькових, перший продаж під вашим наглядом і правила безпеки, які дорослий робить обов'язково.</p></div></div><div class="bitem wide"><span class="bic"><svg width="22" height="22" aria-hidden="true"><use href="#coin"/></svg></span><div><h4>Книжки й настільні ігри про гроші</h4><p>Що почитати вам і що читати разом з дитиною, а також ігри, де результат залежить від рішень, а не від кубика. І чому Монополія сюди не підходить.</p></div></div></div></div>
+    </article>
   </div>
 </section>
 <section class="price" id="price">
   <div class="wrap">
-    <div class="tiers one">
+    <div class="tiers two">
         <article class="tier tier-full">
           <h3>Бонуси</h3>
-          <p class="tier-sub">4 PDF-бонуси + версія для телефону</p>
+          <p class="tier-sub">4 PDF-бонуси + версія для телефону. Базовий стає Повним</p>
           <div class="tier-price">150 <small>грн</small></div>
           <ul class="tlist"><li class="gift"><svg width="20" height="20" aria-hidden="true"><use href="#ph-gift"/></svg><span>Готовий текст першої розмови з дитиною</span></li><li class="gift"><svg width="20" height="20" aria-hidden="true"><use href="#ph-gift"/></svg><span>Якщо дитина проти: план у три кроки</span></li><li class="gift"><svg width="20" height="20" aria-hidden="true"><use href="#ph-gift"/></svg><span>Тато чи бабуся проти? Як домовитися, щоб ніхто не зламав систему</span></li><li class="gift"><svg width="20" height="20" aria-hidden="true"><use href="#ph-gift"/></svg><span>Щоб дитині не набридло: чек-лист із 7 питань раз на місяць</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Мобільна версія: зручно читати з телефону</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Приходять на пошту одразу після оплати</span></li></ul>
           <a class="b1 wide" href="#price" data-tier="bonuses">Докупити бонуси</a>
+        </article>
+        <article class="tier tier-fin">
+          <h3>Фінансова грамотність</h3>
+          <p class="tier-sub">Гайд + 7 аркушів для друку. Підходить і до Базового, і до Повного</p>
+          <div class="tier-price">200 <small>грн</small></div>
+          <ul class="tlist"><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>Фінансова грамотність: гайд, 20 сторінок</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>7 аркушів: скарбничка, конверти, план покупки, Банк батьків</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>Перехід до реальних грошей і перший заробіток</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>Безпека: що робить дорослий, коли дитина продає</span></li><li class="fin"><svg width="20" height="20" aria-hidden="true"><use href="#coin"/></svg><span>Книжки для вас і дитини, настільні ігри про гроші</span></li><li class="ok"><svg width="20" height="20" aria-hidden="true"><use href="#ph-check"/></svg><span>Приходить на пошту одразу після оплати</span></li></ul>
+          <a class="b1 wide" href="#price" data-tier="finance">Докупити фінансову грамотність</a>
         </article>
     </div>
     <div class="tier-foot">
@@ -642,7 +686,7 @@ nav.links a[aria-current="true"]{color:var(--text)}
 <section class="faq" id="faq">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Питання</span><h2>Часті запитання</h2></div>
-    <div class="list"><div class="fcol"><details><summary>У мене ще немає EarnIt. Можна взяти тільки бонуси?</summary><p>Можна, але сенсу мало: бонуси спираються на гайд і без нього відповідають на питання, яких у вас ще немає. Якщо тільки починаєте, беріть одразу <a href="../#price">пакет Повний</a> — там і система, і бонуси, і разом це дешевше.</p></details><details><summary>На яку пошту прийдуть бонуси?</summary><p>На ту, яку вкажете в формі й на сторінці оплати. Вона не мусить збігатися з тією, на яку приходив Базовий.</p></details></div><div class="fcol"><details><summary>А якщо не підійде?</summary><p>Повернемо гроші протягом 14 днів, як і за основний пакет. Напишіть на earnitsystem@gmail.com і вкажіть дані платежу.</p></details><details><summary>Telegram-спільнота теж буде?</summary><p>Вона у вас уже є — посилання було в листі з Базовим. Загубили — напишіть нам, надішлемо ще раз.</p></details></div></div>
+    <div class="list"><div class="fcol"><details><summary>У мене ще немає EarnIt. Можна взяти тільки доповнення?</summary><p>Можна, але сенсу мало: обидва доповнення спираються на систему з монетами й без гайда відповідають на питання, яких у вас ще немає. Якщо тільки починаєте, беріть <a href="../#price">пакет Повний або Максимальний</a> — там і система, і доповнення, і разом це дешевше.</p></details><details><summary>Фінансова грамотність підійде, якщо в мене Базовий?</summary><p>Так. Їй потрібні тільки монети й магазин нагород, які є в будь-якому пакеті. Бонуси для неї не обов'язкові.</p></details><details><summary>Коли починати фінансову грамотність?</summary><p>Коли система з монетами вже працює без ваших щоденних нагадувань — зазвичай через кілька тижнів після запуску. Починайте зі скарбнички, решту додавайте по одному.</p></details></div><div class="fcol"><details><summary>На яку пошту прийдуть файли?</summary><p>На ту, яку вкажете в формі й на сторінці оплати. Вона не мусить збігатися з тією, на яку приходив комплект.</p></details><details><summary>А якщо не підійде?</summary><p>Повернемо гроші протягом 14 днів, як і за основний пакет. Напишіть на earnitsystem@gmail.com і вкажіть дані платежу.</p></details><details><summary>Telegram-спільнота теж буде?</summary><p>Вона у вас уже є — посилання було в листі з комплектом. Загубили — напишіть нам, надішлемо ще раз.</p></details></div></div>
   </div>
 </section>
 </main>
@@ -908,18 +952,22 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
   var TIERS = {
     base: { name: 'Базовий', price: 399 },
     full: { name: 'Повний', price: 499 },
+    max: { name: 'Максимальний', price: 599 },
     bonuses: { name: 'Бонуси', price: 150 },
+    finance: { name: 'Фінансова грамотність', price: 200 },
   };
-  var currentTier = 'full';
+  var currentTier = 'max';
 
   document.addEventListener('DOMContentLoaded', function () {
     var back = document.getElementById('buyModal'), card = document.getElementById('buyCard');
     var form = document.getElementById('buyForm'), lastFocus = null;
     // Перемикач Повний ⇄ Базовий у самій формі. Кнопки «Купити» відкривають
     // форму одразу з Повним, а хто хоче дешевше — перемикається тут, не
-    // повертаючись до блоку цін. Для «Бонусів» (/dodatky) перемикача немає.
+    // повертаючись до блоку цін. Максимальний можна зменшити до Повного.
+    // Для докупок (/dodatky) перемикача немає.
     var alt = document.getElementById('buyAlt');
     var ALT = {
+      max: ['Без фінансової грамотності — ', 'full', 'Повний за ' + TIERS.full.price + ' ₴'],
       full: ['Без бонусів — ', 'base', 'Базовий за ' + TIERS.base.price + ' ₴'],
       base: ['З 4 бонусами — ', 'full', 'Повний за ' + TIERS.full.price + ' ₴'],
     };
@@ -942,7 +990,7 @@ button.car-page:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(29,43
     function openM(e) {
       e.preventDefault(); lastFocus = document.activeElement;
       var t = e.currentTarget && e.currentTarget.getAttribute('data-tier');
-      setTier(TIERS[t] ? t : 'full');
+      setTier(TIERS[t] ? t : 'max');
       var tier = TIERS[currentTier];
       back.classList.add('on');
       document.body.style.overflow = 'hidden';
